@@ -1,0 +1,68 @@
+import React, { lazy } from "react";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { ThemeProvider } from "./context/ThemeContext";
+import PersistentLayout from "./components/Layout/PersistentLayout";
+import { Toaster } from 'sonner';
+// Lazy load pages
+const HomePage = lazy(() => import("./pages/home/Home"));
+import { Profile } from "./pages/Profile/Profile";
+import { Signup } from "./pages/auth/signup/Signup"
+import { LoginPage } from "./pages/auth/login/LoginPage"
+import Search from "./pages/Search/Search";
+import { ForgotPasswordPage } from "./pages/auth/forget-password/ForgotPassword";
+// import { Setting } from "./pages/settings/Settings";
+const Test = lazy(() => import("./pages/test/Test"));
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <PersistentLayout />, // Removed ThemeProvider from here
+    children: [
+      {
+        path: "/",
+        element: <HomePage />,
+      },
+      {
+        path: "/search",
+        element: <Search />
+      },
+      // {
+      //   path: "/settings",
+      //   element: <Setting/>
+      // },
+      {
+        path: "/profile",
+        element: <Profile />,
+      },
+      {
+        path: "/test",
+        element: <Test />,
+      },
+    ],
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPasswordPage/>
+  },
+  
+]);
+
+const App: React.FC = () => {
+  return (
+    // Wrap the entire app with ThemeProvider
+    <ThemeProvider>
+      <Toaster richColors position="top-right" />
+      <RouterProvider router={router} />
+    </ThemeProvider>
+  );
+};
+
+export default App;

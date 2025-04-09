@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Pacifico&family=Bebas+Neue&family=Playfair+Display:wght@400;700&family=Rubik+Wet+Paint&family=Permanent+Marker&family=Anton&family=Great+Vibes&family=Black+Ops+One&family=Indie+Flower&family=Caveat&family=Righteous&family=Satisfy&family=Exo+2:wght@400;700&family=Orbitron:wght@400;700&family=Fredericka+the+Great&family=Bungee&family=Gloria+Hallelujah&family=Press+Start+2P&family=Luckiest+Guy&family=Cinzel:wght@400;700&family=Abril+Fatface&family=Fjalla+One&family=Montserrat+Alternates:wght@400;600&family=Zilla+Slab:wght@400;700&family=Sacramento&family=Shadows+Into+Light&family=Alfa+Slab+One&family=Patua+One&family=Carter+One&family=Dancing+Script:wght@400;700&family=Bitter:wght@400;700&family=Merienda:wght@400;700&family=Courgette&family=Contrail+One&display=swap');
+@import "tailwindcss";
+
+
+@theme {
+  --font-family-secondary: "Arial Rounded MT Bold", Arial, sans-serif;
+  --font-family-primary: "Inter", sans-serif;
+  --border-radius: 8px;
+  --color-mint-500: oklch(0.72 0.11 178);
+  --background-color: #fdfeff;
+  --text-color: #000000;
+  --primary-color: #007AFF;
+  --primary-light-color: rgba(0, 122, 255, 0.15);
+  --brand-color: #070938;
+  --red-color: #FF3B30;
+  --red-light-color: rgba(255, 59, 48, 0.20);
+  --login-card-color: #F5F5F6;
+  --login-card-shadow: 4px 4px 10px rgba(46, 46, 46, 0.15);
+  --gray-light: #68686B;
+  --gray-medium: #323234;
+  --gray-dark: #8E8E93;
+  --border-color: #DBDBDB;
+  --icon-stroke: black;
+  --icon-fill-active: black;
+  --icon-color: black;
+  --story-shadow: rgba(16, 24, 40, 0.08);
+  --glassmorphism: rgba(217, 217, 217, 0.10);
+  --gray-background: #F5F5F6;
+  --edit-button: #BBBBBE;
+  --gray-background-light: #e2e2e3;
+  --story-view-shadow: linear-gradient(180deg, rgba(65, 64, 64, 0.60) 0%, rgba(68, 66, 66, 0.40) 38.54%, rgba(100, 100, 100, 0.00) 85.94%);
+  --story-input: #EFEFF0;
+  --shadow-color: rgba(16, 24, 40, 0.08);
+  --quest-description-color: #e2e2e3;
+  --active-tab: #BBBBBE;
+  --mobile-search-input: rgba(141, 141, 142, 0.15);
+  --remove-button: rgba(128, 128, 128, 0.55);
+  --overlay-background: rgba(0, 0, 0, 0.60);
+  --light-color-button: rgba(0, 122, 255, 0.15);
+  --create-container: #F5F5F6;
+  --neutral-overlay: rgba(82, 82, 84, 0.30);
+  --image-container-shadow: 1px 1px 10px 2px rgba(0, 0, 0, 0.20);
+  --opposite-text-color: #fff;
+  --green-text: #34C759;
+  --green-background: rgba(52, 199, 89, 0.20);
+  --orange-text: #FF9F0A;
+  --orange-background: rgba(255, 159, 10, 0.20);
+  --quest-tools: #EFEFF0;
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  --font-family-secondary: "Arial Rounded MT Bold", Arial, sans-serif;
+  --font-family-primary: "Inter", sans-serif;
+  --border-radius: 8px;
+  --background-color: #05070A;
+  --text-color: #ffffff;
+  --primary-color: #007AFF;
+  --primary-light-color: rgba(0, 122, 255, 0.15);
+  --brand-color: #070938;
+  --red-color: #FF3B30;
+  --login-card-color: #111111;
+  --login-card-shadow: 4px 4px 10px rgba(46, 46, 46, 0.15);
+  --gray-light: #BBBBBE;
+  --gray-medium: #A8A8AC;
+  --gray-dark: #8E8E93;
+  --border-color: #212020;
+  --icon-stroke: white;
+  --icon-fill-active: white;
+  --icon-color: white;
+  --story-shadow: rgba(80, 80, 80, 0.20);
+  --glassmorphism: rgba(217, 217, 217, 0.10);
+  --gray-background: #323234;
+  --edit-button: #323234;
+  --gray-background-light: #565659;
+  --story-view-shadow: linear-gradient(180deg, rgba(0, 0, 0, 0.60) 0%, rgba(0, 0, 0, 0.40) 38.54%, rgba(0, 0, 0, 0.00) 85.94%);
+  --story-input: #2C2C2E;
+  --shadow-color: rgba(80, 80, 80, 0.20);
+  --quest-description-color: #e2e2e3;
+  --active-tab: #68686B;
+  --mobile-search-input: rgba(226, 226, 227, 0.15);
+  --remove-button: rgba(128, 128, 128, 0.55);
+  --overlay-background: rgba(0, 0, 0, 0.65);
+  --light-color-button: rgba(0, 122, 255, 0.15);
+  --create-container: #2C2C2E;
+  --neutral-overlay: rgba(82, 82, 84, 0.30);
+  --image-container-shadow: 1px 1px 10px 2px rgba(255, 255, 255, 0.20);
+  --opposite-text-color: #000;
+  --green-text: #34C759;
+  --green-background: rgba(52, 199, 89, 0.20);
+  --orange-text: #FF9F0A;
+  --orange-background: rgba(255, 159, 10, 0.20);
+  --quest-tools: rgba(141, 141, 142, 0.15);
+}
+
+.login{
+    background-image: url('./assets/compressed//authimg.webp');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center calc(100% - 40px);
+}
+
+.mask-story-ring {
+  -webkit-mask: radial-gradient(circle at center, transparent 64%, black 66%);
+  mask: radial-gradient(circle at center, transparent 64%, black 66%);
+}
+/* dark */
+.login-phone{
+    background-image: url('./assets/compressed//authimg.webp');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center 
+}
+
+/* Home */
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE/Edge */
+  scrollbar-width: none;     /* Firefox */
+  height: calc(var(--vh, 1vh) * 100);
+  
+  &::-webkit-scrollbar {
+    display: none; /* WebKit (Chrome/Safari) */
+  }
+}
+
+.story-section{
+  box-shadow: 0px 12px 16px -4px var(--story-shadow);
+}
+
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  
+  /* Strict scroll-snap enforcement */
+  .snap-mandatory {
+    scroll-snap-type: y mandatory;
+  }
+  
+  .snap-start {
+    scroll-snap-align: start;
+  }
+
+
+/* Smooth snap scrolling */
+@media (pointer: fine) {
+  .snap-container {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Prevent layout shift on mobile */
+@supports (height: 100dvh) {
+  .h-screen {
+    height: 100dvh;
+  }
+}
+
+/* Optimize scrolling performance */
+.post-container {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.font{
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    font-family: var(--font-family-primary);
+    color: #fff;
+    letter-spacing: 0.5px;
+  
+}
+.logo-font{
+  font-family: 'Pacifico', cursive;
+}
+
+.font-text{
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  font-family: var(--font-family-primary);
+  letter-spacing: 0.5px;
+}
+
+
+/* for testing purpose */
+
+.search{
+  filter: drop-shadow(1px 0.5px 2px rgba(0, 0, 0, 0.25)) drop-shadow(0px 6px 10px rgba(0, 0, 0, 0.25));
+}
