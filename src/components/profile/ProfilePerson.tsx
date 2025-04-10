@@ -1,4 +1,4 @@
-import avatar from '../../assets/compressed/logo1.png'
+import avatar from '../../assets/compressed/profile2.jpeg'
 
 interface  ProfilePersonProps {
   // Define any props you need here
@@ -9,8 +9,8 @@ interface  ProfilePersonProps {
   followerCount?: number;
   category?: string;
   description?: string;
-  bioLinks : BioLinks[];
 }
+
 
 interface BioLinks {
   title: string;
@@ -26,11 +26,11 @@ const mockBioLinks: BioLinks[] = [
 
 export const ProfilePerson = ({photo , name ,flickCount , followerCount , followingCount ,category , description } : ProfilePersonProps) => {
   return (
-    <div className="flex flex-col lg:flex-row  gap-6 p-2 2xl:px-20 w-full">
+    <div className="flex flex-col lg:flex-row  gap-14 p-2 2xl:px-20 w-full">
       {/* Avatar - Always left aligned */}
       <img
         src={photo || avatar}
-        className="w-40 h-40 flex my-auto  rounded-full object-contain mx-auto lg:mx-0"
+        className="w-40 h-40 flex my-auto  rounded-full object-cover mx-auto lg:mx-0"
       />
 
       {/* Main Content Container */}
@@ -45,11 +45,11 @@ export const ProfilePerson = ({photo , name ,flickCount , followerCount , follow
           {/* Buttons + Stats Row */}
           <div className="flex flex-col gap-4">
             <div className="flex gap-7">
-            <p className="text-white/70 text-2xl">{name || 'Johnsmith_'}</p>
-              <button className="py-2 px-4 bg-slate-700 text-white rounded-md text-sm">
+            <p className="text-white/90 fontPrimary text-2xl">{name || 'Johnsmith_'}</p>
+              <button className="py-2 px-4 fontPrimary bg-[#323234] text-white rounded-md text-sm">
                 Edit Profile
               </button>
-              <button className="py-2 px-4 bg-slate-700 text-white rounded-md text-sm">
+              <button className="py-2 px-4 fontPrimary bg-[#323234] text-white rounded-md text-sm">
                 Share Profile
               </button>
             </div>
@@ -57,24 +57,24 @@ export const ProfilePerson = ({photo , name ,flickCount , followerCount , follow
             {/* Desktop Stats */}
             <div className="flex gap-14">
               <div className="flex flex-col lg:flex-row lg:gap-2">
-                <span className="text-white text-xl lg:text-lg">{flickCount || 120}</span>
-                <span className="text-white/70 text-sm lg:text-lg ">Posts</span>
+                <span className="text-white fontPrimary text-xl lg:text-lg">{flickCount || 120}</span>
+                <span className="text-white/80 fontSecondary text-sm lg:text-lg ">Posts</span>
               </div>
               <div className="flex flex-col lg:flex-row lg:gap-2">
-                <span className="text-white text-xl lg:text-lg">{followerCount ||  10}K</span>
-                <span className="text-white/70 text-sm lg:text-lg">Followers</span>
+                <span className="text-white fontPrimary text-xl lg:text-lg">{followerCount ||  10}K</span>
+                <span className="text-white/80 fontSecondary text-sm lg:text-lg">Followers</span>
               </div>
               <div className="flex flex-col lg:flex-row lg:gap-2">
-                <span className="text-white text-xl lg:text-lg">{followingCount || 500}</span>
-                <span className="text-white/70 text-sm lg:text-lg">Following</span>
+                <span className="text-white fontPrimary text-xl lg:text-lg">{followingCount || 500}</span>
+                <span className="text-white/80 fontSecondary text-sm lg:text-lg">Following</span>
               </div>
             </div>
           </div>
 
           {/* Bio Section */}
-          <div className="flex flex-col gap-1">
-            <p className="text-white font-semibold text-lg">{name ||"John Smith"}</p>
-            <p className="text-white/50 text-sm">{category || "Product/Service"}</p>
+          <div className="flex flex-col gap-1 fontPrimary">
+            <p className="text-white font-semibold  text-lg">{name ||"John Smith"}</p>
+            <p className="text-white/50 text-sm ">{category || "Product/Service"}</p>
             <p className="text-white/70 text-sm">
               {description || "Your favourite fun clips 💹 In your language 💺"}
             </p>
@@ -85,26 +85,26 @@ export const ProfilePerson = ({photo , name ,flickCount , followerCount , follow
         {/* Mobile Layout */}
         <div className="lg:hidden flex flex-col gap-3 w-full">
           {/* Mobile Name */}
-          <p className="text-white/70 text-xl text-center w-full">{name || "Johnsmith_"}</p>
+          <p className="text-white/70 text-xl text-center w-full fontPrimary">{name || "Johnsmith_"}</p>
 
           {/* Mobile Stats */}
           <div className="grid grid-cols-3 gap-4 w-full">
             <div className="flex flex-col items-center">
-              <span className="text-white text-xl">120</span>
-              <span className="text-white/70 text-sm">Posts</span>
+              <span className="text-white text-xl fontPrimary">120</span>
+              <span className="text-white/70 text-sm fontSecondary">Posts</span>
+            </div>
+            <div className="flex flex-col items-center ">
+              <span className="text-white text-xl fontPrimary">10K</span>
+              <span className="text-white/70 text-sm fontSecondary">Followers</span>
             </div>
             <div className="flex flex-col items-center">
-              <span className="text-white text-xl">10K</span>
-              <span className="text-white/70 text-sm">Followers</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <span className="text-white text-xl">500</span>
-              <span className="text-white/70 text-sm">Following</span>
+              <span className="text-white text-xl fontPrimary">500</span>
+              <span className="text-white/70 text-sm fontSecondary">Following</span>
             </div>
           </div>
 
           {/* Bio Section */}
-          <div className="flex flex-col gap-1 text-center">
+          <div className="flex flex-col gap-1 text-center fontPrimary">
             <p className="text-white font-semibold lg:block hidden">John Smith</p>
             <p className="text-white/50 text-sm">Product/Service</p>
             <p className="text-white/70 text-sm">
@@ -115,10 +115,10 @@ export const ProfilePerson = ({photo , name ,flickCount , followerCount , follow
 
           {/* Mobile Buttons */}
           <div className="flex gap-2 w-full">
-            <button className="py-2 px-4 bg-slate-700 text-white rounded-md flex-1 text-sm">
+            <button className="py-2 fontPrimary px-4 bg-[#323234] text-white rounded-md flex-1 text-sm">
               Edit Profile
             </button>
-            <button className="py-2 px-4 bg-slate-700 text-white rounded-md flex-1 text-sm">
+            <button className="py-2 fontPrimary px-4 bg-[#323234] text-white rounded-md flex-1 text-sm">
               Share Profile
             </button>
           </div>

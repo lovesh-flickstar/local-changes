@@ -188,6 +188,12 @@
   font-family: var(--font-family-primary);
   letter-spacing: 0.5px;
 }
+.fontPrimary{
+  font-family: var(--font-family-primary);
+}
+.fontSecondary{
+  font-family: var(--font-family-secondary);
+}
 
 
 /* for testing purpose */

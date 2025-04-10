@@ -71,20 +71,21 @@ const Search: React.FC = () => {
     ], []);
 
     return (
-        <>
-        <main className="flex-1 border-r px-4 border-white/10 h-full overflow-hidden md:mt-0 flex flex-col">
-    <div className="relative px-16 flex items-center" ref={searchRef}>
+        <div className="flex w-full justify-between h-full overflow-y-auto">
+        <main className="flex-1 w-full border-r px-4 border-white/10 h-full overflow-hidden md:mt-0 flex flex-col">
+    <div className=" px-16 flex items-center" ref={searchRef}>
+        <div className="relative w-full">
         <input
             type="text"
-            className="w-2xl bg-transparent border py-2 px-4 border-gray-300 rounded-full text-gray-300 outline-none mt-5 mb-0 focus:ring-0"
+            className="w-full relative bg-transparent border py-2 px-4 border-gray-300 rounded-full text-gray-300 outline-none mt-5 mb-0 focus:ring-0"
             placeholder="Search..."
             value={searchQuery}
             onFocus={() => setSearchActive(true)}
             onChange={handleSearchChange}
             aria-label="Search content"
         />
-        <i className="bi bi-search absolute 2xl:right-20 top-10 -translate-y-1/2 text-gray-300 text-xl" aria-hidden="true" />
-
+        <i className="bi bi-search absolute right-5 top-10 -translate-y-1/2 text-gray-300 text-xl" aria-hidden="true" />
+        </div>
         {searchActive && !showSuggestions && (
             <RecentSearches
                 searches={recentSearches}
@@ -128,12 +129,13 @@ const Search: React.FC = () => {
             {tabContent[activeIndex]}
         </div>
     </div>
+    
 </main>
 
 <RightSidebar image={avatar1} />
 
 
-        </>
+        </div>
     );
 };
 
