@@ -106,12 +106,16 @@ export const SearchQuest = memo(() => (
   [-ms-overflow-style:none] [scrollbar-width:none]
   [&::-webkit-scrollbar]:hidden"
   aria-label="Quest listings"
+  
 >
+<div className="p-2 overflow-y-auto max-h-[calc(100vh-10rem)] [-ms-overflow-style:none] [scrollbar-width:none]
+  [&::-webkit-scrollbar]:hidden scroll-smooth">
   {questData.map((data, index) => (
     <QuestCard 
       key={`quest-${data.title}-${index}`} 
       data={data} 
     />
   ))}
+  </div>
 </section>
 ));

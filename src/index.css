@@ -195,6 +195,17 @@
   font-family: var(--font-family-secondary);
 }
 
+.typography-default {
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0%;
+  text-align: left;
+  vertical-align: top;
+}
+
+
 
 /* for testing purpose */
 

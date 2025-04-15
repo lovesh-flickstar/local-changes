@@ -6,8 +6,8 @@ import {SearchQuest} from "../../components/Quest/SearchQuest";
 import Music from "../../components/media/Music";
 import {People} from "../../components/Card/PeopleCard";
 import {Tags} from "../../components/Modal/Tag";
-import avatar1 from "../../assets/compressed/avatar1_compressed_compressed_compressed_compressed_compressed-transformed-transformed.webp";
 import RightSidebar from "../../components/Sidebar/RightSidebar";
+import { FriendSuggestions } from "../../components/Section/FriendSuggestionSection";
 
 type TabName = "flicks" | "quest" | "music" | "people" | "tags";
 
@@ -72,7 +72,7 @@ const Search: React.FC = () => {
 
     return (
         <div className="flex w-full justify-between h-full overflow-y-auto">
-        <main className="flex-1 w-full border-r px-4 border-white/10 h-full overflow-hidden md:mt-0 flex flex-col">
+        <main className=" w-full border-r px-4 border-white/10 h-full overflow-hidden md:mt-0 flex flex-col">
     <div className=" px-16 flex items-center" ref={searchRef}>
         <div className="relative w-full">
         <input
@@ -132,9 +132,11 @@ const Search: React.FC = () => {
     
 </main>
 
-<RightSidebar image={avatar1} />
 
 
+<RightSidebar>
+    <FriendSuggestions/>
+</RightSidebar>
         </div>
     );
 };

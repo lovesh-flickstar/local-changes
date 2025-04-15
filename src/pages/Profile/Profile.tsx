@@ -9,6 +9,7 @@ import { useState } from "react"
 import { QuestCard } from '../../components/profile/QuestCard';
 import { TaggedFlick } from "../../components/profile/TaggedFlick"
 import { TaggedQuest } from "../../components/profile/TaggedQuest"
+import { FriendSuggestions } from "../../components/Section/FriendSuggestionSection"
 
 export const Profile = () => {
   const [activeTab, setActiveTab] = useState("flick");
@@ -42,7 +43,9 @@ export const Profile = () => {
      
 
     </div>
-   <RightSidebar image={avatar}/>
+   <RightSidebar image={avatar}>
+    <FriendSuggestions/>
+   </RightSidebar>
 </div>
   )
 }

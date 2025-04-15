@@ -12,14 +12,16 @@ export const Flicks = () => {
    
 
     return (
-        <div className="w-full h-auto overflow-y-auto scrollbar-hide">
-  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1 p-2">
+        <div className="w-full h-[calc(100vh- [100px])] overflow-y-auto scrollbar-hide">
+  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1 p-2 max-h-[calc(100vh-180px)]  overflow-y-auto snap-y snap-mandatory scroll-smooth
+        [scrollbar-width:none] [-ms-overflow-style:none] 
+        [-webkit-overflow-scrolling:touch]">
     {flicks.map((flick, index) => (
       <div key={index} className="w-full ">
         <img
           src={flick}
           alt={`Flick ${index + 1}`}
-          className="w-full h-full rounded object-contain"
+          className="w-full h-full rounded-lg object-contain hover:scale-110 transition-transform duration-300 "
         />
       </div>
     ))}

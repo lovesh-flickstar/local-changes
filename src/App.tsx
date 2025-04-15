@@ -10,6 +10,9 @@ import { Signup } from "./pages/auth/signup/Signup"
 import { LoginPage } from "./pages/auth/login/LoginPage"
 import Search from "./pages/Search/Search";
 import { ForgotPasswordPage } from "./pages/auth/forget-password/ForgotPassword";
+import { Wallet } from "./pages/walllet/Wallet";
+import { NotificationPage } from "./pages/notification/Notification";
+import { Setting } from "./pages/settings/SettingsPage";
 // import { Setting } from "./pages/settings/Settings";
 const Test = lazy(() => import("./pages/test/Test"));
 
@@ -35,8 +38,20 @@ const router = createBrowserRouter([
         element: <Profile />,
       },
       {
+        path: "/wallet",
+        element: <Wallet/>,
+      },
+      {
         path: "/test",
         element: <Test />,
+      },
+      {
+        path: "/notifications",
+        element: <NotificationPage/>,
+      },
+      {
+        path: "/settings",
+        element: <Setting/>,
       },
     ],
   },

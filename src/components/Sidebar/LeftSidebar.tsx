@@ -10,7 +10,7 @@ export const LeftSidebar = () => (
             <div className="home-content">FlickStar</div>
         </div>
         <nav>
-            <ul className="nav flex-column gap-4">
+            <ul className="nav flex-column typography-default gap-4">
                 <li className="nav-item">
                     <NavLink to="/" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
                         <svg className="icon" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">

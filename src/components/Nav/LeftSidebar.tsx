@@ -25,7 +25,7 @@ const LeftSidebar = () => (
                     <NavLink 
                         to={item.path} 
                         className={({ isActive }) => 
-                            `flex items-center gap-5 2xl:gap-7 pl-0 text-lg 2xl:text-2xl font-light font-primary text-white
+                            `flex items-center gap-5 2xl:gap-7 pl-0 text-lg 2xl:text-2xl font-light typography-default text-white
                             ${isActive ? 'font-semibold' : ''}`
                         }
                     >
