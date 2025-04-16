@@ -205,6 +205,9 @@
   vertical-align: top;
 }
 
+.fontClass{
+  font-family: 'Inter', sans-serif;
+}
 
 
 /* for testing purpose */
