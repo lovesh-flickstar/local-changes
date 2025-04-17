@@ -58,10 +58,10 @@ export const MobileNav: FC = () => (
     {/* Bottom Navigation Bar */}
     <nav className="fixed bottom-0 z-[100] flex w-full items-center justify-around bg-black py-2 shadow-top md:hidden">
       {[
-        { path: '/home', icon: HomeIcon, label: 'Home' },
+        { path: '/', icon: HomeIcon, label: 'Home' },
         { path: '/search', icon: SearchIcon, label: 'Search' },
         { path: '/create', icon: CreateIcon, label: 'Create' },
-        { path: '/quest', icon: QuestIcon, label: 'Quest' },
+        { path: '/quests', icon: QuestIcon, label: 'Quest' },
         { path: '/profile', icon: ProfileIcon, label: 'Profile' },
       ].map(({ path, icon: Icon, label }) => (
         <Link

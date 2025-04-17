@@ -14,7 +14,7 @@ import { FriendSuggestions } from "../../components/Section/FriendSuggestionSect
 export const Profile = () => {
   const [activeTab, setActiveTab] = useState("flick");
   return (
-<div className="flex w-full justify-between h-full overflow-y-auto ">
+<div className="flex w-full justify-between h-full overflow-y-auto py-10 md:py-0">
     <div className="flex flex-col gap-7 h-full w-full px-8">
       <ProfilePerson/>
      <div className="lg:px-30  p-2 flex justify-between w-full fontPrimary">

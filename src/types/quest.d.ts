@@ -7,6 +7,7 @@ export interface Quest {
     status: 'active' | 'expired';
     image: string;
     amount: number;
+    location: string;
   }
   
   export interface CreateQuest {

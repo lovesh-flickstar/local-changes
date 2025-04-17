@@ -1,10 +1,10 @@
 // import { useEffect, useState } from "react";
 // import { Quest } from "../../../../types/quest";
 
-import { AllQuestData } from "../../../../constants/Quest/AllQuestData";
-import avatar from "../../../../assets/compressed/avatar1_compressed_compressed_compressed_compressed_compressed-transformed-transformed.webp";
+import { AllQuestData } from "../../../constants/Quest/AllQuestData";
+import avatar from "../../../assets/compressed/avatar1_compressed_compressed_compressed_compressed_compressed-transformed-transformed.webp";
 
-import { AllQuestCard } from "../questCard/AllQuestCard";
+import { AllQuestCard } from "../_components/questCard/AllQuestCard";
 import { useState } from "react";
 
 const TabButton: React.FC<{

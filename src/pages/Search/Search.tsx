@@ -9,6 +9,7 @@ import {Tags} from "../../components/Modal/Tag";
 import RightSidebar from "../../components/Sidebar/RightSidebar";
 import { FriendSuggestions } from "../../components/Section/FriendSuggestionSection";
 
+
 type TabName = "flicks" | "quest" | "music" | "people" | "tags";
 
 const Search: React.FC = () => {
@@ -71,20 +72,20 @@ const Search: React.FC = () => {
     ], []);
 
     return (
-        <div className="flex w-full justify-between h-full overflow-y-auto">
+        <div className="flex w-full justify-between h-full overflow-y-auto py-10 md:py-0">
         <main className=" w-full border-r px-4 border-white/10 h-full overflow-hidden md:mt-0 flex flex-col">
-    <div className=" px-16 flex items-center" ref={searchRef}>
+    <div className=" lg:px-16 flex items-center" ref={searchRef}>
         <div className="relative w-full">
         <input
             type="text"
-            className="w-full relative bg-transparent border py-2 px-4 border-gray-300 rounded-full text-gray-300 outline-none mt-5 mb-0 focus:ring-0"
+            className="w-full relative bg-transparent border py-2 px-4 border-[#BBBBBE] text-white rounded-full placeholder:text-[#BBBBBE] outline-none mt-5 mb-0 focus:ring-0"
             placeholder="Search..."
             value={searchQuery}
             onFocus={() => setSearchActive(true)}
             onChange={handleSearchChange}
             aria-label="Search content"
         />
-        <i className="bi bi-search absolute right-5 top-10 -translate-y-1/2 text-gray-300 text-xl" aria-hidden="true" />
+        <i className="bi bi-search absolute right-5 top-10 -translate-y-1/2 text-[#BBBBBE] text-xl" aria-hidden="true" />
         </div>
         {searchActive && !showSuggestions && (
             <RecentSearches
@@ -97,10 +98,10 @@ const Search: React.FC = () => {
         {showSuggestions && <Suggestions onNavigate={(tab) => navigateToTab(tab as TabName)} onClose={closeSuggestions} />}
     </div>
 
-    <hr aria-hidden="true" className="my-4 text-slate-500 mx-3" />
+    <hr aria-hidden="true" className="my-4 text-[#212020] mx-3" />
 
     <div className="md:px-[8%] relative ">
-        <div className="flex justify-around relative bg-white/10 rounded-full p-2 overflow-hidden" role="tablist">
+        <div className="flex justify-around relative bg-[#323234] rounded-full p-2 overflow-hidden" role="tablist">
             <div 
                 className="absolute top-0 h-full bg-gray-500 rounded-full transition-all duration-300"
                 style={{
@@ -115,7 +116,7 @@ const Search: React.FC = () => {
                     key={tab}
                     role="tab"
                     aria-selected={activeIndex === index}
-                    className={`flex-1 text-center z-10 text-gray-300 text-base font-primary ${activeIndex === index ? "text-white" : ""}`}
+                    className={`flex-1 cursor-pointer text-center z-10 text-[#BBBBBE] text-base font-primary ${activeIndex === index ? "text-white" : ""}`}
                     onClick={() => setActiveIndex(index)}
                 >
                     {tab}
@@ -137,6 +138,7 @@ const Search: React.FC = () => {
 <RightSidebar>
     <FriendSuggestions/>
 </RightSidebar>
+
         </div>
     );
 };

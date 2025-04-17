@@ -106,11 +106,34 @@ export const PasswordStep = () => {
           </div>
 
           {/* Progress Bar */}
-          <div className="flex h-2 mb-4">
-  <div className={`flex-1 rounded-l ${count >= 1 ? (count >= 3 ? 'bg-green-500' : count >= 2 ? 'bg-yellow-500' : 'bg-red-500') : 'bg-gray-500'}`}></div>
-  <div className={`flex-1 ${count >= 2 ? (count >= 3 ? 'bg-green-500' : 'bg-yellow-500') : 'bg-gray-500'}`}></div>
-  <div className={`flex-1 rounded-r ${count >= 3 ? 'bg-green-500' : 'bg-gray-500'}`}></div>
+            <div className="flex h-2 mb-4">
+            <div className="flex w-full h-2 rounded overflow-hidden bg-gray-700">
+  <div
+    className={`
+      transition-all duration-700 ease-in-out
+      ${count === 0 ? "bg-gray-500" :
+        count === 1 ? "bg-red-500 w-1/3" :
+        count === 2 ? "bg-yellow-500 w-2/3" :
+        "bg-green-500 w-full"}
+    `}
+  ></div>
 </div>
+
+            <div
+              className={`flex-1 transition-colors duration-500 ${
+              count >= 2
+                ? count >= 3
+                ? "bg-green-500"
+                : "bg-yellow-500"
+                : "bg-gray-500"
+              }`}
+            ></div>
+            <div
+              className={`flex-1 rounded-r transition-colors duration-500 ${
+              count >= 3 ? "bg-green-500" : "bg-gray-500"
+              }`}
+            ></div>
+            </div>
 
           {/* Password Requirements List */}
           <div className="flex flex-col gap-2">

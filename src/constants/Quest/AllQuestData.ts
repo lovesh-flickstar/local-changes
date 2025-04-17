@@ -7,8 +7,11 @@ import avatar5 from "../../assets/compressed/avatar5_compressed_compressed_compr
 import avatar7 from "../../assets/compressed/avatar7_compressed_compressed_compressed.webp";
 
 export interface Quest {
+  startIndex?: number;
+  onClose?: () => void;
   id: string;
-  coverImage: string;
+  coverImage: string; // Keep this as is
+  images?: string[]; // Optional additional images
   title: string;
   description: string;
   price: number;
@@ -18,9 +21,56 @@ export interface Quest {
   authorAvatar: string;
   tag: "OnFlick" | "GoFlick" | "OffFlick";
   liked: boolean;
+  amount?: number;
+  location?: string;
 }
 
 export const AllQuestData: Quest[] = [
+  {
+    id: "11",
+    coverImage: quest,
+    images: [quest1, quest2, quest3, quest], // Optional images added
+    title: "Visit My Coffee Cafe near street",
+    description:
+      "I just opened my cozy little coffee shop down the street...",
+    price: 100,
+    date: "23 Mar 2025",
+    authorName: "Steave Joe",
+    authorUsername: "steave_joe",
+    authorAvatar: avatar3,
+    tag: "OnFlick",
+    liked: true,
+  },
+  {
+    id: "12",
+    coverImage: quest1,
+    images: [quest3, quest],
+    title: "Healthy Green Vibes Salad Day",
+    description:
+      "We're blending wellness with taste — try our organic green salad...",
+    price: 90,
+    date: "23 Mar 2025",
+    authorName: "Steave Joe",
+    authorUsername: "steave_joe",
+    authorAvatar: avatar5,
+    tag: "OnFlick",
+    liked: false,
+  },
+  {
+    id: "13",
+    coverImage: quest2,
+    images: [quest3],
+    title: "Weekend Vibes with Friends",
+    description:
+      "Call your best friend and head over for a free trial...",
+    price: 86,
+    date: "23 Mar 2025",
+    authorName: "Steave Joe",
+    authorUsername: "steave_joe",
+    authorAvatar: avatar7,
+    tag: "GoFlick",
+    liked: true,
+  },
   {
     id: "1",
     coverImage: quest,

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { CreateQuestForm } from './_components/create/CreateQuestForm';
-import { QuestList } from './_components/questTabs/AllQuests';
-import { QuesSponsored } from './_components/questTabs/Sponsored';
-import { QuestProfile } from './_components/questTabs/Profile';
+import { QuestList } from './questTabs/AllQuests';
+import { QuesSponsored } from './questTabs/Sponsored';
+import { QuestProfile } from './questTabs/Profile';
 const TabButton: React.FC<{
     active: boolean;
     onClick: () => void;
@@ -24,7 +24,7 @@ export const QuestPage = () => {
   const [showCreateForm, setShowCreateForm] = useState(false);
 
   return (
-    <div className="flex flex-col w-full py-6">
+    <div className="flex flex-col w-full h-full py-10 md:py-6">
       {/* Conditional Tabs */}
       {!showCreateForm && (
         <div className="flex gap-4 border-b-1 border-b-[#8E8E93] w-full px-6">
@@ -49,7 +49,7 @@ export const QuestPage = () => {
         </div>
       )}
 
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-6 overflow-y-auto h-full bg-black">
         {showCreateForm ? (
           <CreateQuestForm 
             onSuccess={() => setShowCreateForm(false)}

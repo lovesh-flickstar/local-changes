@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import LeftSidebar from '../Nav/LeftSidebar';
+import { MobileNav } from '../media/MobileNav';
 
 const PersistentLayout = () => {
   return (
@@ -13,7 +14,7 @@ const PersistentLayout = () => {
       {/* Changing Content Area */}
       
         <Outlet /> 
-  
+    <MobileNav />
     </div>
   );
 };

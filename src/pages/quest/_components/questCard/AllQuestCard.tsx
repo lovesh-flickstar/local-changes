@@ -1,21 +1,23 @@
 import { FaHeart, FaRegHeart,} from "react-icons/fa";
+import { Quest } from "../../../../constants/Quest/AllQuestData";
+import { useNavigate } from "react-router-dom";
 
-interface Quest {
-  coverImage: string;
-  title: string;
-  authorAvatar: string;
-  authorName: string;
-  authorUsername: string;
-  liked: boolean;
-  description: string;
-  tag: string;
-  price: number;
-  date: string;
+
+
+interface Props {
+  quest: Quest;
 }
 
-export const AllQuestCard = ({ quest }: { quest: Quest }) => {
+
+export const AllQuestCard: React.FC<Props> = ({ quest }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/quests/${quest.id}`);
+  };
   return (
-    <div className="relative rounded-2xl overflow-hidden shadow-lg bg-black/80 text-white w-full">
+    <div className="relative rounded-2xl overflow-hidden shadow-lg bg-black/80 text-white w-full"
+    onClick={handleClick}>
       <img
         src={quest.coverImage}
         alt={quest.title}

@@ -14,6 +14,7 @@ import { Wallet } from "./pages/walllet/Wallet";
 import { NotificationPage } from "./pages/notification/Notification";
 import { Setting } from "./pages/settings/SettingsPage";
 import { QuestPage } from "./pages/quest/QuestPage";
+import QuestDetail from "./pages/quest/_components/questCard/QuestDetail";
 // import { Setting } from "./pages/settings/Settings";
 const Test = lazy(() => import("./pages/test/Test"));
 
@@ -30,10 +31,10 @@ const router = createBrowserRouter([
         path: "/search",
         element: <Search />
       },
-      // {
-      //   path: "/settings",
-      //   element: <Setting/>
-      // },
+      {
+        path: "/quests/:id",
+        element: <QuestDetail/>
+      },
       {
         path: "/profile",
         element: <Profile />,
