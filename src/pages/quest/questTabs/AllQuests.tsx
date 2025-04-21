@@ -1,35 +1,32 @@
-// import { useEffect, useState } from "react";
-// import { Quest } from "../../../../types/quest";
-
 import { useState } from "react";
-import { AllQuestData } from "../../../constants/Quest/AllQuestData";
-
 import { AllQuestCard } from "../_components/questCard/AllQuestCard";
 import {FilterModal} from "../_components/filter&sort/FilterModal";
 import { SortModal } from "../_components/filter&sort/SortModal";
+import { Quest } from "../../../types/quest";
+import { constant } from "../../../constants/constant";
+import useFetchWithToken from "../../../hooks/useQuest";
+
+export type QuestsApiResponse = {
+  data: {
+    quests: Quest[];
+  };
+};
 
 export const QuestList = ({ onCreateQuest }: { onCreateQuest: () => void }) => {
-    const [openFilter, setOpenFilter] = useState(false);
-    const [openSort, setOpenSort] = useState(false);
 
-//   const [quests, setQuests] = useState<Quest[]>([]);
-//   const [loading, setLoading] = useState(true);
+  const [openFilter, setOpenFilter] = useState(false);
+  const [openSort, setOpenSort] = useState(false);
 
-//   useEffect(() => {
-//     const fetchQuests = async () => {
-//     //   try {
-//     //     const response = await fetch("/api/quests");
-//         // const data = await response.json();
-//         // setQuests(data);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
+  const { data: quests = [], isError, isLoading } = useFetchWithToken<Quest[]>(
+    `${constant.BASE_URL}/v1/quest`,
+    {
+      selector: (res) => (res as QuestsApiResponse).data.quests,
+    }
+  );
+  
+  if (isError) return <p>Failed to load quests</p>;
 
-//     fetchQuests();
-//   }, []); // Empty dependency array ensures this runs only once on mount
-
-//   if (loading) return <LoadingSkeleton />;
+  if (isLoading) return <LoadingSkeleton />;
 
   return (
     <div className="w-full">
@@ -43,7 +40,7 @@ export const QuestList = ({ onCreateQuest }: { onCreateQuest: () => void }) => {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <g clip-path="url(#clip0_2651_9613)">
+              <g clipPath="url(#clip0_2651_9613)">
                 <path
                   d="M4.06997 5.3769C6.00581 7.85898 9.58039 12.459 9.58039 12.459V18.209C9.58039 18.7361 10.0116 19.1673 10.5387 19.1673H12.4554C12.9825 19.1673 13.4137 18.7361 13.4137 18.209V12.459C13.4137 12.459 16.9787 7.85898 18.9146 5.3769C19.4033 4.7444 18.9529 3.83398 18.1575 3.83398H4.82706C4.03164 3.83398 3.58122 4.7444 4.06997 5.3769Z"
                   fill="#8E8E93"
@@ -102,22 +99,22 @@ export const QuestList = ({ onCreateQuest }: { onCreateQuest: () => void }) => {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4 overflow-y-auto max-h-[calc(100vh-200px)]  [-ms-overflow-style:none] [scrollbar-width:none]
   [&::-webkit-scrollbar]:hidden">
-        {AllQuestData.map((quest) => (
-          <AllQuestCard key={quest.id} quest={quest} />
+        {quests.map((quest: Quest) => (
+          <AllQuestCard key={quest._id} quest={quest} />
         ))}
       </div>
     </div>
   );
 };
 
-// const LoadingSkeleton = () => (
-//   <div className="max-w-4xl mx-auto space-y-4">
-//     {[...Array(3)].map((_, i) => (
-//       <div key={i} className="p-4 bg-white rounded-xl animate-pulse">
-//         <div className="h-4 bg-gray-200 rounded w-1/3 mb-2"></div>
-//         <div className="h-3 bg-gray-200 rounded w-full mb-2"></div>
-//         <div className="h-3 bg-gray-200 rounded w-2/3"></div>
-//       </div>
-//     ))}
-//   </div>
-// );
+export const LoadingSkeleton = () => (
+  <div className="max-w-4xl mx-auto space-y-4">
+    {[...Array(3)].map((_, i) => (
+      <div key={i} className="p-4 bg-white rounded-xl animate-pulse">
+        <div className="h-4 bg-gray-200 rounded w-1/3 mb-2"></div>
+        <div className="h-3 bg-gray-200 rounded w-full mb-2"></div>
+        <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+      </div>
+    ))}
+  </div>
+);

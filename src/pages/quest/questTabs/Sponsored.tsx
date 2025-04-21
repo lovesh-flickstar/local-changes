@@ -1,28 +1,18 @@
-// import { useEffect, useState } from "react";
-// import { Quest } from "../../../../types/quest";
-
-import { AllQuestData } from "../../../constants/Quest/AllQuestData";
-
 import { AllQuestCard } from "../_components/questCard/AllQuestCard";
+import { Quest } from "../../../types/quest";
+import useFetchWithToken from "../../../hooks/useQuest";
+import { QuestsApiResponse } from "./AllQuests";
+import { constant } from "../../../constants/constant";
 export const QuesSponsored = () => {
-//   const [quests, setQuests] = useState<Quest[]>([]);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const fetchQuests = async () => {
-//     //   try {
-//     //     const response = await fetch("/api/quests");
-//         // const data = await response.json();
-//         // setQuests(data);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchQuests();
-//   }, []); // Empty dependency array ensures this runs only once on mount
-
-//   if (loading) return <LoadingSkeleton />;
+  
+    const { data: quests = [], isError, isLoading } = useFetchWithToken<Quest[]>(
+        `${constant.BASE_URL}/v1/quest?type=sponsored`,
+        {
+          selector: (res) => (res as QuestsApiResponse).data.quests,
+        }
+      );
+    if (isError) return <p>Failed to load quests</p>;
+    if (isLoading) return <p>Loading quests...</p>;
 
   return (
     <div className="w-full">
@@ -36,7 +26,7 @@ export const QuesSponsored = () => {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <g clip-path="url(#clip0_2651_9613)">
+              <g clipPath="url(#clip0_2651_9613)">
                 <path
                   d="M4.06997 5.3769C6.00581 7.85898 9.58039 12.459 9.58039 12.459V18.209C9.58039 18.7361 10.0116 19.1673 10.5387 19.1673H12.4554C12.9825 19.1673 13.4137 18.7361 13.4137 18.209V12.459C13.4137 12.459 16.9787 7.85898 18.9146 5.3769C19.4033 4.7444 18.9529 3.83398 18.1575 3.83398H4.82706C4.03164 3.83398 3.58122 4.7444 4.06997 5.3769Z"
                   fill="#8E8E93"
@@ -62,7 +52,7 @@ export const QuesSponsored = () => {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4 overflow-y-auto max-h-[calc(100vh-200px)]  [-ms-overflow-style:none] [scrollbar-width:none]
   [&::-webkit-scrollbar]:hidden">
-        {AllQuestData.map((quest) => (
+        {quests.map((quest:Quest) => (
           <AllQuestCard quest={quest}/>
         ))}
       </div>

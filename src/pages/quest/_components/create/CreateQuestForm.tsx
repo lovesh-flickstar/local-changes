@@ -1,23 +1,32 @@
 // CreateQuestForm.tsx
 import { useForm } from 'react-hook-form';
 import { CreateQuest } from '../../../../types/quest';
+import axios from 'axios';
+import { constant } from '../../../../constants/constant';
+import { useState } from 'react';
 
 export const CreateQuestForm = ({ 
   onSuccess,
+  
 }: { 
   onSuccess: () => void;
   onCancel: () => void;
 }) => {
-  const { handleSubmit } = useForm<CreateQuest>();
+  const { handleSubmit, register } = useForm<CreateQuest>();
+  const [presignedURLs, setPresignedURLs] = useState(null);
 
   const submitForm = async (values: CreateQuest) => {
     try {
-      await fetch('/api/quests', {
-        method: 'POST',
+      const accessToken = localStorage.getItem('accessToken');
+      if (!accessToken) {
+        throw new Error('No access token found');
+      }
+    
+      await axios.post(`${constant.BASE_URL}/v1/quest/`, values , {
         headers: {
-          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify(values),
+       
       });
       onSuccess();
     } catch (error) {
@@ -44,6 +53,7 @@ export const CreateQuestForm = ({
                   type='text'
                   className='p-3 outline-none w-full border placeholder:text-[#E2E2E3] border-[#A8A8AC] rounded-lg'
                   placeholder='Enter the Title here'
+                  {...register("title")}
                   />
             </div>
             <div className='flex flex-col gap-3 w-full'>
@@ -51,6 +61,7 @@ export const CreateQuestForm = ({
               <textarea
                 className='p-3 h-44 outline-none w-full border placeholder:text-[#E2E2E3] border-[#A8A8AC] rounded-lg'
                 placeholder='Provide brief information about your quest.'
+                {...register("description")}
               />
             </div>
             <div className='flex flex-col gap-3 w-full'>
@@ -59,6 +70,7 @@ export const CreateQuestForm = ({
                 <input
                 type='file'
                 className='absolute inset-0 w-full h-full opacity-0 cursor-pointer'
+                {...register("media")}
                 />
                 <div className='p-3 h-44 outline-none w-full border-2 border-dashed placeholder:text-[#E2E2E3] border-[#A8A8AC] rounded-lg flex items-center flex-col justify-center'>
                 <svg width="73" height="59" viewBox="0 0 73 59" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -73,11 +85,11 @@ export const CreateQuestForm = ({
             <label className='font-semibold text-lg'>Choose Mode</label>
                 <div className='flex gap-7'>
                   <div className='flex gap-2'>
-                    <input type='radio' name='mode' value='GoFlick' id='GoFlick' className='w-5'/>
+                    <input type='radio'  value='GoFlick' id='GoFlick' className='w-5' {...register("mode")}/>
                     <label htmlFor='GoFlick' className='font-medium text-lg'>GoFlick</label>
                   </div>
                   <div className='flex gap-2'>
-                    <input type='radio' name='mode' value='OnFlick' id='OnFlick' className='w-5' />
+                    <input type='radio'  value='OnFlick' id='OnFlick' className='w-5'  {...register("mode")}/>
                     <label htmlFor='OnFlick' className='font-medium text-lg'>OnFlick</label>
                   </div>
                 </div>
@@ -88,6 +100,7 @@ export const CreateQuestForm = ({
                   type='file'
                   className='p-3 outline-none w-full border placeholder:text-[#E2E2E3] border-[#A8A8AC] rounded-lg'
                   placeholder='Enter location here'
+                  {...register("location")}
                   />
                   <div className='flex items-end gap-2 justify-end'>
                     <svg width="19" height="25" viewBox="0 0 19 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -132,8 +145,8 @@ export const CreateQuestForm = ({
                     </svg>
                   </div>
               </div>
-                <p className='text-center leading-3 tracking-widest text-3xl font-semibold'>$19,200.89</p>
-            </div>
+                <p className='text-center leading-3 tracking-widest text-3xl font-semibold' >$19,200.89</p>
+            </div> 
             <div className='flex flex-col gap-3 w-full'>
                 <label className='font-semibold text-lg'>Applicants Limit</label>
                 <p className='text-sm font-normal text-[#8E8E93]'>Please specify the number of applicants eligible to participate in this quest.</p>
@@ -141,6 +154,7 @@ export const CreateQuestForm = ({
                   type='textarea'
                   className='p-3 outline-none w-full border placeholder:text-[#E2E2E3] border-[#A8A8AC] rounded-lg'
                   placeholder='Enter the Applicant limit '
+                  {...register('maxApplicants')}
                   />
                   <p className='text-center text-sm font-normal text-[#8E8E93]'>Eg. 100 maximum applicants can apply</p>
             </div>
@@ -153,6 +167,7 @@ export const CreateQuestForm = ({
                   type='text'
                   className='p-3 outline-none w-full border placeholder:text-[#E2E2E3] border-[#A8A8AC] rounded-r-lg'
                   placeholder='Enter the total amount'
+                  {...register('totalAmount')}
                   />
                 </div>
                

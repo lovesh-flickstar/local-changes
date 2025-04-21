@@ -9,9 +9,9 @@ import avatar7 from "../../assets/compressed/avatar7_compressed_compressed_compr
 export interface Quest {
   startIndex?: number;
   onClose?: () => void;
-  id: string;
+  _id: string;
   coverImage: string; // Keep this as is
-  images?: string[]; // Optional additional images
+  thumbnailURLs?: string[]; // Optional additional images
   title: string;
   description: string;
   price: number;
@@ -29,7 +29,7 @@ export const AllQuestData: Quest[] = [
   {
     id: "11",
     coverImage: quest,
-    images: [quest1, quest2, quest3, quest], // Optional images added
+    thumbnailURLs: [quest1, quest2, quest3, quest], // Optional images added
     title: "Visit My Coffee Cafe near street",
     description:
       "I just opened my cozy little coffee shop down the street...",
@@ -44,7 +44,7 @@ export const AllQuestData: Quest[] = [
   {
     id: "12",
     coverImage: quest1,
-    images: [quest3, quest],
+    thumbnailURLs: [quest3, quest],
     title: "Healthy Green Vibes Salad Day",
     description:
       "We're blending wellness with taste — try our organic green salad...",
@@ -59,7 +59,7 @@ export const AllQuestData: Quest[] = [
   {
     id: "13",
     coverImage: quest2,
-    images: [quest3],
+    thumbnailURLs: [quest3],
     title: "Weekend Vibes with Friends",
     description:
       "Call your best friend and head over for a free trial...",

@@ -1,11 +1,10 @@
 // import { useEffect, useState } from "react";
 // import { Quest } from "../../../../types/quest";
 
-import { AllQuestData } from "../../../constants/Quest/AllQuestData";
 import avatar from "../../../assets/compressed/avatar1_compressed_compressed_compressed_compressed_compressed-transformed-transformed.webp";
-
-import { AllQuestCard } from "../_components/questCard/AllQuestCard";
 import { useState } from "react";
+import { Myquest } from "./Profile/Myquest";
+import { AppliedQuest } from "./Profile/Appliedquest";
 
 const TabButton: React.FC<{
     active: boolean;
@@ -65,7 +64,7 @@ const [activeTab, setActiveTab] = useState<'all' | 'applied' | 'Favourites'>('al
                     </p>
                     <p className="flex gap-2 items-center">
                     <svg width="21" height="22" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g clip-path="url(#clip0_5184_18489)">
+                        <g clipPath="url(#clip0_5184_18489)">
                         <path d="M10.3263 9.99167C8.34 9.45083 7.70125 8.89167 7.70125 8.02083C7.70125 7.02167 8.585 6.325 10.0637 6.325C11.6212 6.325 12.1988 7.10417 12.2512 8.25H14.185C14.1237 6.67333 13.205 5.225 11.3762 4.7575V2.75H8.75125V4.73C7.05375 5.115 5.68875 6.27 5.68875 8.03917C5.68875 10.1567 7.36 11.2108 9.80125 11.825C11.9887 12.375 12.4262 13.1817 12.4262 14.0342C12.4262 14.6667 11.9975 15.675 10.0637 15.675C8.26125 15.675 7.5525 14.8317 7.45625 13.75H5.53125C5.63625 15.7575 7.07125 16.885 8.75125 17.2608V19.25H11.3762V17.2792C13.0825 16.94 14.4388 15.9042 14.4388 14.025C14.4388 11.4217 12.3125 10.5325 10.3263 9.99167Z" fill="white"/>
                         </g>
                         <defs>
@@ -101,7 +100,7 @@ const [activeTab, setActiveTab] = useState<'all' | 'applied' | 'Favourites'>('al
           </div>
           <div className={` ${activeTab==="applied" && "border-b-2 border-b-white"} px-2 lg:px-12 items-center flex gap-2 cursor-pointer`}>
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g clip-path="url(#clip0_2652_10618)">
+                <g clipPath="url(#clip0_2652_10618)">
                 <path d="M12.2266 21.7129C12.9297 21.7129 13.4277 21.1074 13.7891 20.1699L20.1855 3.46094C20.3613 3.01172 20.459 2.61133 20.459 2.2793C20.459 1.64453 20.0684 1.25391 19.4336 1.25391C19.1016 1.25391 18.7012 1.35157 18.252 1.52735L1.45508 7.96289C0.634766 8.27539 0 8.77344 0 9.48633C0 10.3848 0.683594 10.6875 1.62109 10.9707L6.89453 12.5723C7.51953 12.7676 7.87109 12.748 8.29102 12.3574L19.0039 2.34766C19.1309 2.23047 19.2773 2.25 19.375 2.33789C19.4727 2.43555 19.4824 2.58203 19.3652 2.70899L9.39453 13.4609C9.01367 13.8613 8.98438 14.1934 9.16992 14.8476L10.7227 20.0039C11.0156 20.9902 11.3184 21.7129 12.2266 21.7129Z" fill="#8E8E93"/>
                 </g>
                 <defs>
@@ -119,7 +118,7 @@ const [activeTab, setActiveTab] = useState<'all' | 'applied' | 'Favourites'>('al
           </div>
           <div className={` ${activeTab==="Favourites" && "border-b-2 border-b-white"} px-2 lg:px-12 items-center flex gap-2 cursor-pointer`}>
              <svg width="21" height="18" viewBox="0 0 21 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M10.3281 2.9882C8.42876 0.887048 5.25489 0.237701 2.87509 2.16173C0.495286 4.08575 0.160242 7.3026 2.02912 9.57817C3.58296 11.4701 8.28542 15.4604 9.82664 16.752C9.99901 16.8965 10.0852 16.9687 10.1858 16.9971C10.2736 17.0218 10.3696 17.0218 10.4574 16.9971C10.558 16.9687 10.6442 16.8965 10.8166 16.752C12.3579 15.4604 17.0603 11.4701 18.6141 9.57817C20.483 7.3026 20.1888 4.06551 17.7681 2.16173C15.3474 0.257941 12.2275 0.887048 10.3281 2.9882Z" fill="#8E8E93" stroke="#8E8E93" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path fillRule="evenodd" clipRule="evenodd" d="M10.3281 2.9882C8.42876 0.887048 5.25489 0.237701 2.87509 2.16173C0.495286 4.08575 0.160242 7.3026 2.02912 9.57817C3.58296 11.4701 8.28542 15.4604 9.82664 16.752C9.99901 16.8965 10.0852 16.9687 10.1858 16.9971C10.2736 17.0218 10.3696 17.0218 10.4574 16.9971C10.558 16.9687 10.6442 16.8965 10.8166 16.752C12.3579 15.4604 17.0603 11.4701 18.6141 9.57817C20.483 7.3026 20.1888 4.06551 17.7681 2.16173C15.3474 0.257941 12.2275 0.887048 10.3281 2.9882Z" fill="#8E8E93" stroke="#8E8E93" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
              </svg>
 
                 <TabButton
@@ -133,9 +132,12 @@ const [activeTab, setActiveTab] = useState<'all' | 'applied' | 'Favourites'>('al
        
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4 overflow-y-auto max-h-[calc(100vh-370px)]  md:max-h-[calc(100vh-362px)]  [-ms-overflow-style:none] [scrollbar-width:none]
   [&::-webkit-scrollbar]:hidden">
-        {AllQuestData.map((quest) => (
+        {/* {AllQuestData.map((quest) => (
           <AllQuestCard quest={quest}/>
-        ))}
+        ))} */}
+        {activeTab === 'all' && <Myquest/>}
+        {activeTab === 'applied' && <AppliedQuest/>} 
+        {activeTab === 'Favourites' && <Myquest/>}
       </div>
     </div>
   );
