@@ -36,8 +36,11 @@ export interface Quest {
   export interface CreateQuest {
     title: string;
     description: string;
-    media: string[]; // Array of media URLs
-    thumbnailURL: string; // Thumbnail image URL
+    media: {
+      fileName: string; // Name of the media file
+      fileType: string; // Type of the media file (e.g., image, video)
+    }[]; // Array of media URLs
+    thumbnailURL: string[]; // Thumbnail image URL
     mode: string; // Mode of the quest
     location: string; // Location of the quest
     coords: {

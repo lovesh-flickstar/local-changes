@@ -130,8 +130,7 @@ const [activeTab, setActiveTab] = useState<'all' | 'applied' | 'Favourites'>('al
           </div>
       </div>
        
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4 overflow-y-auto max-h-[calc(100vh-370px)]  md:max-h-[calc(100vh-362px)]  [-ms-overflow-style:none] [scrollbar-width:none]
-  [&::-webkit-scrollbar]:hidden">
+      <div className="">
         {/* {AllQuestData.map((quest) => (
           <AllQuestCard quest={quest}/>
         ))} */}

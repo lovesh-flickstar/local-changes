@@ -35,7 +35,7 @@ export const FavouritesQuest = () => {
     return (
         <div>
         {quests.map((quest) => (
-                  <AllQuestCard quest={quest}/>
+                  <AllQuestCard quest={quest} key="fav"/>
                 ))}
         </div>
     )

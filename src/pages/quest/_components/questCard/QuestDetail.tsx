@@ -8,6 +8,7 @@ import { LoadingSkeleton } from "../../questTabs/AllQuests";
 import useFetchWithToken from "../../../../hooks/useQuest";
 import { Quest } from "../../../../types/quest";
 
+
 type QuestDetailsApiResponse = {
   data: {
     questdetails: Quest;
@@ -177,6 +178,30 @@ const QuestDetail = () => {
             </div>
           </div>
           <p className="text-[#8E8E93] font-normal my-auto">Last updated 3 days ago</p>
+        </div>
+        <div className="flex flex-col gap-3 text-white mt-2">
+          <p className="font-semibold text-2xl">Insights</p>
+          <div className="flex justify-between w-full px-6">
+            <div className="flex flex-col gap-1 items-center font-semibold">
+              <p className="text-xl">Applicants</p>
+              <p className="text-lg">120/200 &gt;</p>
+            </div>
+            <div className="border-r border-r-[#68686B]"></div>
+            <div className="flex flex-col gap-1 items-center font-semibold">
+              <p className="text-xl">Likes</p>
+              <p className="text-lg">34</p>
+            </div>
+            <div className="border-r border-r-[#68686B]"></div>
+            <div className="flex flex-col gap-1 items-center font-semibold">
+              <p className="text-xl">Performace</p>
+              <p className="text-lg">98%</p>
+            </div>
+            <div className="border-r border-r-[#68686B]"></div>
+            <div className="flex flex-col gap-1 items-center font-semibold">
+              <p className="text-xl">Analytics</p>
+              <p className="text-lg text-blue-600 cursor-pointer" onClick={()=>navigate("/applicants")}>view Analytics</p>
+            </div>
+          </div>
         </div>
             <div className="text-white  rounded-xl">
               <h2 className="text-2xl font-semibold ">

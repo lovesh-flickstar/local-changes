@@ -16,6 +16,7 @@ import { Setting } from "./pages/settings/SettingsPage";
 import { QuestPage } from "./pages/quest/QuestPage";
 import QuestDetail from "./pages/quest/_components/questCard/QuestDetail";
 import { CreateStory } from "./pages/Create/CreateStory";
+import { AllApplicants } from "./pages/quest/_components/Applicants/AllApplicants";
 // import { Setting } from "./pages/settings/Settings";
 const Test = lazy(() => import("./pages/test/Test"));
 
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
         path: "/create",
         element: <CreateStory/>,
       },
+      {
+        path: "/applicants",
+        element: <AllApplicants/>
+      }
     ],
   },
   {

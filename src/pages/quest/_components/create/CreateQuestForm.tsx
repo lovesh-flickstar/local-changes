@@ -1,42 +1,241 @@
-// CreateQuestForm.tsx
-import { useForm } from 'react-hook-form';
-import { CreateQuest } from '../../../../types/quest';
-import axios from 'axios';
-import { constant } from '../../../../constants/constant';
-import { useState } from 'react';
+import { SubmitHandler, useForm } from "react-hook-form";
+import axios from "axios";
+import { constant } from "../../../../constants/constant";
+import { useEffect, useState } from "react";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 
-export const CreateQuestForm = ({ 
-  onSuccess,
-  
-}: { 
-  onSuccess: () => void;
-  onCancel: () => void;
-}) => {
-  const { handleSubmit, register } = useForm<CreateQuest>();
-  const [presignedURLs, setPresignedURLs] = useState(null);
+const QuestSchema = z.object({
+  title: z.string().min(4, "Title is required"),
+  description: z.string().min(4, "Description is required"),
+  mode: z.enum(["GoFlick", "OnFlick"]),
+  maxApplicants: z.coerce.number().int().min(1, "Max Applicants is required"),
+  totalAmount: z.coerce.number().int().min(1, "Total Amount is required"),
+  location: z.string().min(4, "Location is required"),
+  lat: z.coerce
+    .number()
+    .min(-90, "Invalid latitude")
+    .max(90, "Invalid latitude"),
+  long: z.coerce
+    .number()
+    .min(-180, "Invalid longitude")
+    .max(180, "Invalid longitude"),
+  media: z.instanceof(FileList)
+});
+type QuestData = z.infer<typeof QuestSchema>;
+export const CreateQuestForm = ({ onSuccess }: { onSuccess: () => void }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    watch,
+  } = useForm<QuestData>({
+    resolver: zodResolver(QuestSchema),
+    defaultValues: {
+      lat: 26.8770276,
+      long: 75.7255187,
+    },
+  });
+  console.log("-======>", errors)
+  const [, setMediaPreviews] = useState<
+    Array<{ url: string; type: string }>
+  >([]);
+  const mediaFileList = watch("media");
+     // Generate previews for selected media files
+      useEffect(() => {
+          if (mediaFileList?.length > 0) {
+              const files = Array.from(mediaFileList);
+              const newPreviews = files.map(file => ({
+                  url: URL.createObjectURL(file),
+                  type: file.type
+              }));
+              setMediaPreviews(newPreviews);
+              return () => {
+                  newPreviews.forEach(preview => URL.revokeObjectURL(preview.url));
+              };
+          } else {
+              setMediaPreviews([]);
+          }
+      }, [mediaFileList]);
+  useEffect(() => {
+    if (mediaFileList?.length > 0) {
+      const files = Array.from(mediaFileList);
+      const newPreviews = files.map((file) => ({
+        url: URL.createObjectURL(file),
+        type: file.type,
+      }));
+      setMediaPreviews(newPreviews);
+      return () => {
+        newPreviews.forEach((preview) => URL.revokeObjectURL(preview.url));
+      };
+    } else {
+      setMediaPreviews([]);
+    }
+  }, [mediaFileList]);
+  // const handleSetLocation = () => {
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition(
+  //       (position) => {
+  //         setCoords({
+  //           lat: position.coords.latitude,
+  //           long: position.coords.longitude
+  //         });
+  //       },
+  //       (error) => {
+  //         console.error('Error getting location:', error);
+  //       }
+  //     );
+  //   }
+  // };
 
-  const submitForm = async (values: CreateQuest) => {
+  // const submitForm = async (values: CreateQuest) => {
+  //   try {
+  //     const accessToken = localStorage.getItem('accessToken');
+  //     if (!accessToken) throw new Error('No access token found');
+
+  //     // Step 1: Get presigned URLs
+  //     const mediaFiles = Array.from((values.media as unknown) as FileList);
+  //     const presignedPayload = {
+  //       media: mediaFiles.map(file => ({
+  //         fileName: file.name,
+  //         fileType: file.type
+  //       }))
+  //     };
+  //     console.log('Presigned Payload:', presignedPayload);
+  //     const presignedResponse = await axios.post(
+  //       `${constant.BASE_URL}/v1/quest`,
+  //       presignedPayload,
+  //       { headers: { Authorization: `Bearer ${accessToken}` } }
+  //     );
+
+  //     const { questId, mediaSignedURL, thumbnailSignedURL } = presignedResponse.data.data;
+  //     console.log('Presigned URLs:', presignedResponse);
+  //     // Step 2: Upload files to presigned URLs
+  //     const uploadPromises = mediaFiles.map((file, index) =>
+  //       axios.put(mediaSignedURL[index], file, {
+  //         headers: { 'Content-Type': file.type }
+  //       })
+  //     );
+
+  //     await Promise.all(uploadPromises);
+
+  //     // Step 3: Construct public URLs
+  //     const mediaUrls: string[] = mediaSignedURL.map((url: string) => url.split('?')[0]);
+  //     const thumbnailUrls: string[] = thumbnailSignedURL.map((url: string): string => url.split('?')[0]);
+
+  //     // Step 4: Create quest with uploaded media
+  //     await axios.put(
+  //       `${constant.BASE_URL}/v1/quest/${questId}`,
+  //       {
+  //         ...values,
+  //         coords,
+  //         media: mediaUrls.map((url, index) => ({
+  //           type: mediaFiles[index].type.startsWith('video/') ? 'video' : 'photo',
+  //           duration: 60, // You might want to calculate this from actual files
+  //           thumbnailURL: thumbnailUrls[index],
+  //           url: url
+  //         })),
+  //         country: "IN", // Default value
+  //         type: "Exclusive" // Default value
+  //       },
+  //       { headers: { Authorization: `Bearer ${accessToken}` } }
+  //     );
+
+  //     onSuccess();
+  //   } catch (error) {
+  //     console.error('Submission failed:', error);
+  //     alert('Submission failed. Check console for details.');
+  //   }
+  // };
+ 
+
+  const onSubmit: SubmitHandler<QuestData> = async (formData) => {
+    if (isSubmitting) return;
+    console.log(formData)
     try {
+      const { media, lat, long, ...rest } = formData;
+      const mediaArray = Array.from(media);
+  
+      // 1. Get presigned URLs for media files
       const accessToken = localStorage.getItem('accessToken');
-      if (!accessToken) {
-        throw new Error('No access token found');
-      }
-    
-      await axios.post(`${constant.BASE_URL}/v1/quest/`, values , {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
+      const presignedResponse = await axios.post(
+        `${constant.BASE_URL}/v1/quest`,
+        {
+          media: mediaArray.map((file: File) => ({
+            fileName: file.name,
+            fileType: file.type,
+          })),
         },
-       
+        { headers: { Authorization: `Bearer ${accessToken}` } },
+      );
+      const { questId, mediaSignedURL, thumbnailSignedURL } = presignedResponse.data.data;
+  
+      // 2. Upload each media file to its presigned URL
+      const uploadPromises = mediaArray .map((file: File, index: number) => {
+        return Promise.all([
+          axios.put(mediaSignedURL[index], file, {
+            headers: { "Content-Type": file.type },
+          }),
+          axios.put(thumbnailSignedURL[index], file, {
+            headers: { "Content-Type": file.type },
+          }),
+        ]);
       });
+      
+    const check  =   await Promise.all(uploadPromises);
+    console.log(check)
+  
+      // 3. Construct public URLs for media and thumbnails
+      const publicBase = "https://pub-301c1efdf41d428f9ab043c4d4ecbac9.r2.dev";
+  const mediaUrls = mediaSignedURL.map((url: string) => {
+    const pathname = new URL(url).pathname;
+    return `${publicBase}${pathname}`;
+  });
+  const thumbnailUrls = thumbnailSignedURL.map((url: string) => {
+    const pathname = new URL(url).pathname;
+    return `${publicBase}${pathname}`;
+  });
+      // 4. Submit quest data with media URLs
+      
+      await axios.post(
+        `${constant.BASE_URL}/v1/quest/${questId}`,
+        {
+          ...rest,
+          coords: {
+            lat,
+            long
+          },
+          media: Array.from(media).map((file: File, index: number) => ({
+            type: file.type.startsWith("video/") ? "video" : "photo",
+            alt:["ac", "ab"],
+            duration: 60, // Replace with actual duration extraction if needed
+            thumbnailURL: thumbnailUrls[index],
+            url: mediaUrls[index],
+          })),
+          country: "IN", // Hardcoded as per requirements
+          type: "Exclusive", // Hardcoded as per requirements
+        },
+        { headers: { Authorization: `Bearer ${accessToken}` } },
+      );
+      toast.success("Quest created successfully");
       onSuccess();
-    } catch (error) {
-      console.error('Submission failed:', error);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error("Quest creation error:", error.response?.data?.message);
+        toast.error(error.response?.data?.message || "Failed to create quest");
+      } else {
+        console.error("Unexpected error:", error);
+        toast.error("An unexpected error occurred");
+      }
+      console.error("Quest creation error:", error);
+      // toast.error(error.response?.data?.message || "Failed to create quest");
     }
   };
 
   return (
     <form 
-      onSubmit={handleSubmit(submitForm)}
+      onSubmit={handleSubmit(onSubmit)}
       className="w-full fontClass flex flex-col gap-2 p-3 lg:px-20 text-white 
       overflow-y-auto h-full [-ms-overflow-style:none] [scrollbar-width:none]
   [&::-webkit-scrollbar]:hidden"
@@ -70,6 +269,8 @@ export const CreateQuestForm = ({
                 <input
                 type='file'
                 className='absolute inset-0 w-full h-full opacity-0 cursor-pointer'
+                accept="image/,video/"
+                multiple
                 {...register("media")}
                 />
                 <div className='p-3 h-44 outline-none w-full border-2 border-dashed placeholder:text-[#E2E2E3] border-[#A8A8AC] rounded-lg flex items-center flex-col justify-center'>
@@ -97,7 +298,7 @@ export const CreateQuestForm = ({
             <div className='flex flex-col gap-3 w-full'>
                 <label className='font-semibold text-lg'>Enter Location</label>
                 <input
-                  type='file'
+                  type='text'
                   className='p-3 outline-none w-full border placeholder:text-[#E2E2E3] border-[#A8A8AC] rounded-lg'
                   placeholder='Enter location here'
                   {...register("location")}
