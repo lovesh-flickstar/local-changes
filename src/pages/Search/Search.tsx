@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
-import {RecentSearches} from "../../components/Card/RecentSearchCard";
+// import {RecentSearches} from "../../components/Card/RecentSearchCard";
 import {Suggestions} from "../../components/Card/SuggestionCard";
 import {Flicks} from "../../components/Flicks/Flicks";
 import {SearchQuest} from "../../components/Quest/SearchQuest";
@@ -13,19 +13,18 @@ import { FriendSuggestions } from "../../components/Section/FriendSuggestionSect
 type TabName = "flicks" | "quest" | "music" | "people" | "tags";
 
 const Search: React.FC = () => {
-    const [searchActive, setSearchActive] = useState(false);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [activeIndex, setActiveIndex] = useState(0);
     const searchRef = useRef<HTMLDivElement>(null);
 
     // Memoized static data
-    const recentSearches = useMemo(() => [
-        "FlickStar", "Quest", "JavaScript", "Frontend Development",
-        "Web Performance", "Albert Jones", "Lorem Ipsum", "Jessica",
-        "John Smith", "Dil Tu Jaan Tu", "Movies", "#recentsearches",
-        "event planning", "Social Media", "Best Quest",
-    ], []);
+    // const recentSearches = useMemo(() => [
+    //     "FlickStar", "Quest", "JavaScript", "Frontend Development",
+    //     "Web Performance", "Albert Jones", "Lorem Ipsum", "Jessica",
+    //     "John Smith", "Dil Tu Jaan Tu", "Movies", "#recentsearches",
+    //     "event planning", "Social Media", "Best Quest",
+    // ], []);
 
     const tabNames = useMemo(() => ["Flicks", "Quest", "Music", "People", "Tags"], []);
 
@@ -40,14 +39,14 @@ const Search: React.FC = () => {
         const tabIndex = tabNames.indexOf(tabName);
         if (tabIndex !== -1) {
             setActiveIndex(tabIndex);
-            setSearchActive(false);
+            // setSearchActive(false);
             setShowSuggestions(false);
         }
     }, [tabNames]);
 
     const closeSuggestions = useCallback(() => {
         setShowSuggestions(false);
-        setSearchActive(false);
+        // setSearchActive(false);
     }, []);
 
     // Click outside handler
@@ -81,19 +80,13 @@ const Search: React.FC = () => {
             className="w-full relative bg-transparent border py-2 px-4 border-[#BBBBBE] text-white rounded-full placeholder:text-[#BBBBBE] outline-none mt-5 mb-0 focus:ring-0"
             placeholder="Search..."
             value={searchQuery}
-            onFocus={() => setSearchActive(true)}
+            // onFocus={() => setSearchActive(true)}
             onChange={handleSearchChange}
             aria-label="Search content"
         />
         <i className="bi bi-search absolute right-5 top-10 -translate-y-1/2 text-[#BBBBBE] text-xl" aria-hidden="true" />
         </div>
-        {searchActive && !showSuggestions && (
-            <RecentSearches
-                searches={recentSearches}
-                onSearch={setSearchQuery}
-                onClear={closeSuggestions}
-            />
-        )}
+        
 
         {showSuggestions && <Suggestions onNavigate={(tab) => navigateToTab(tab as TabName)} onClose={closeSuggestions} />}
     </div>
