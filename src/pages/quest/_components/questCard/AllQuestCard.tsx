@@ -13,7 +13,6 @@ interface Props {
 export const AllQuestCard: React.FC<Props> = ({ quest }) => {
   const navigate = useNavigate();
   const date = new Date(quest.createdAt);
-  console.log(quest);
 
 const formattedDate = date.toLocaleDateString("en-GB", {
   day: "2-digit",

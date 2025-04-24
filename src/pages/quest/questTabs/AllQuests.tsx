@@ -39,28 +39,31 @@ export const QuestList = ({ onCreateQuest }: { onCreateQuest: () => void }) => {
 
   const {
     register: registerSort,
-    handleSubmit: handleSortSubmit,
-    getValues: getSortValues,
+    watch: watchSort
   } = useForm<SortData>();
 
   const onSubmit = () => {
-    const filterData = getFilterValues();
-    const sortData = getSortValues();
+    const filterData = getFilterValues(); // still okay here
+    const sortData = {
+      date: watchSort("date"),
+      amount: watchSort("amount"),
+    };
+  
     const combinedData = { ...filterData, ...sortData };
-
+  
     const params = new URLSearchParams();
-
     if (combinedData.type) params.append("mode", combinedData.type);
     if (combinedData.minNumber) params.append("low", String(combinedData.minNumber));
     if (combinedData.maxNumber) params.append("high", String(combinedData.maxNumber));
     if (combinedData.location) params.append("country", combinedData.location);
-    if (combinedData.date) params.append("sort", combinedData.date);
-    if (combinedData.amount) params.append("sort", combinedData.amount);
-
+    if (sortData.date) params.append("sort", sortData.date);
+    else if (sortData.amount) params.append("sort", sortData.amount);
+  
     console.log("params", params.toString());
-
+  
     setQueryParams(params.toString() ? params : null);
   };
+  
 
   const url = useMemo(() => {
     return queryParams
@@ -76,7 +79,6 @@ export const QuestList = ({ onCreateQuest }: { onCreateQuest: () => void }) => {
     enabled: !!url,
     selector: (res) => (res as QuestsApiResponse).data.quests,
   });
-  console.log("quests", quests);
 
   if (isError) return <p>Failed to load quests</p>;
   if (isLoading) return <LoadingSkeleton />
@@ -246,8 +248,13 @@ export const QuestList = ({ onCreateQuest }: { onCreateQuest: () => void }) => {
     {/* Date */}
     <div className="flex flex-col gap-2 items-start w-full ]">
         <h2 className="text-md font-medium">Date</h2>
-        <select className="w-52 h-9 px-3 py-2 rounded-lg outline-none placeholder:font-medium placeholder:text-[#BBBBBE] border border-[#A8A8AC]" {...registerSort("date")} onChange={() => handleSortSubmit(onSubmit)()}>
-            <option className="text-black hover:text-white" >None</option>
+        <select className="w-52 h-9 px-3 py-2 rounded-lg outline-none placeholder:font-medium placeholder:text-[#BBBBBE] border border-[#A8A8AC]" {...registerSort("date")} 
+         onChange={(e) => {
+          // manually set the value in the form
+          registerSort("date").onChange(e);
+          onSubmit(); // immediately call onSubmit
+        }}>
+            <option className="text-black hover:text-white" value="">None</option>
             <option className="text-black hover:text-white" value="date-desc">Highest to Lowest</option>
             <option className="text-black hover:text-white" value="date-asc">Lowest to Highest</option>
         </select>
@@ -256,7 +263,12 @@ export const QuestList = ({ onCreateQuest }: { onCreateQuest: () => void }) => {
         {/* Amount */}
         <div className="flex flex-col gap-2 items-start w-full ]">
         <h2 className="text-md font-medium">Amount</h2>
-        <select className="w-52 h-9 px-3 py-2 rounded-lg outline-none placeholder:font-medium placeholder:text-[#BBBBBE] border border-[#A8A8AC]" {...registerSort("amount")} onChange={() => handleSortSubmit(onSubmit)()}>
+        <select className="w-52 h-9 px-3 py-2 rounded-lg outline-none placeholder:font-medium placeholder:text-[#BBBBBE] border border-[#A8A8AC]" {...registerSort("amount")} 
+         onChange={(e) => {
+          // manually set the value in the form
+          registerSort("amount").onChange(e);
+          onSubmit(); // immediately call onSubmit
+        }}>
             <option  className="text-black hover:text-white">None</option>
             <option className="text-black hover:text-white" value="amount-desc">Highest to Lowest</option>
             <option className="text-black hover:text-white" value="amount-asc">Lowest to Highest</option>

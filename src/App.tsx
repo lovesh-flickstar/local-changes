@@ -73,7 +73,11 @@ const router = createBrowserRouter([
       {
         path: "/quests/:id/applicants",
         element: <AllApplicants/>
-      }
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
+      },
     ],
   },
   {
