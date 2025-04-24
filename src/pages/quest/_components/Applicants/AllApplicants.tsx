@@ -1,30 +1,98 @@
-{/* <div className="flex fontClass text-white w-full justify-between h-full overflow-y-auto py-10 md:py-0"> */}
-import { useState } from "react";
-import { applicants } from "../../../../constants/AllApplicants";
+import { useEffect, useState } from "react";
+// import { applicants } from '../../../../constants/AllApplicants';
 import { removedApplicants } from "../../../../constants/RemovedApplicants";
-import { useNavigate } from "react-router-dom";
-export const AllApplicants = () => {
-    const [selectedApplicants, setSelectedApplicants] = useState<number[]>([]);
-    const [view, setView] = useState('applications'); 
-    const navigate = useNavigate();
+import { useNavigate, useParams } from "react-router-dom";
+import useFetchWithToken from "../../../../hooks/useQuest";
+import { constant } from "../../../../constants/constant";
+import axios from "axios";
 
-    const toggleApplicant = (id: number): void => {
-      if (selectedApplicants.includes(id)) {
-      setSelectedApplicants(selectedApplicants.filter((applicantId: number) => applicantId !== id));
+
+type ApplicantApiResponse = {
+  data: {
+    quests: Applicant[];
+  };
+};
+
+export type Applicant = {
+  _id: string;
+  user: {
+    _id: string;
+    username: string;
+    name: string;
+    photo: string;
+  };
+  quest: string;
+  description: {
+  text: string;
+  }[];
+  media: {
+    url: string;
+    type: string; 
+    thumbnail: string;
+    _id: string;
+  }[];
+  status: 'pending' | 'approved' | 'rejected'; 
+  partialAllowance: boolean;
+  suspended: boolean;
+  createdAt: string; 
+  updatedAt: string; 
+};
+
+export const AllApplicants = () => {
+    const [selectedApplicants, setSelectedApplicants] = useState<string[]>([]);
+    const [applicants, setApplicants] = useState<Applicant[]>([]);
+
+    const [view, setView] = useState('applications'); 
+    const { id } = useParams<{ id: string }>();
+    const navigate = useNavigate();
+    
+    const {data: applicantdata} = useFetchWithToken<Applicant[]>(
+      `${constant.BASE_URL}/v1/quest/${id}/applicant`,
+      {
+        selector: (res) => (res as ApplicantApiResponse).data.quests,
+      }
+    );
+
+    useEffect(() => {
+      if (applicantdata) {
+        setApplicants(applicantdata);
+      }
+    }, [applicantdata]);
+    console.log("i am here ",applicantdata);
+
+    const toggleApplicant = (id: string): void => {
+      setSelectedApplicants((prev) =>
+        prev.includes(id) ? prev.filter((appId) => appId !== id) : [...prev, id]
+      );
+    };
+    
+    
+    const selectAll = () => {
+      const allIds = applicantdata?.map((a) => a._id); 
+      if (selectedApplicants.length === applicantdata?.length) {
+        setSelectedApplicants([]);
       } else {
-      setSelectedApplicants([...selectedApplicants, id]);
+        setSelectedApplicants(allIds || []);
+      }
+    };
+
+    const updateApplicantStatus = async (applicantId: string, status: "approved" | "rejected") => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        const url = `${constant.BASE_URL}/v1/quest-applicant/${applicantId}?status=${status}`;
+        const response = await axios.patch(url,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          }
+        });
+        return response.data;
+      } catch (error) {
+        console.error(`Failed to update status for ${applicantId}`, error);
+        throw error;
       }
     };
     
-      const selectAll = () => {
-        if (view === 'applications') {
-          if (selectedApplicants.length === applicants.length) {
-            setSelectedApplicants([]);
-          } else {
-            setSelectedApplicants(applicants.map(a => a.id));
-          }
-        }
-      };
     return (
         <div className="flex fontClass text-white w-full justify-between h-full overflow-y-auto py-10 md:py-0">
             <div className="w-full flex flex-col gap-3 overflow-y-auto p-6">
@@ -49,14 +117,15 @@ export const AllApplicants = () => {
           <input 
             type="checkbox" 
             className="w-4 h-4 bg-transparent border border-gray-600 rounded"
-            checked={view === 'applications' && selectedApplicants.length === applicants.length}
+            checked={view === 'applications' && selectedApplicants.length === applicantdata?.length}
             onChange={selectAll}
           />
           <span className="text-sm text-gray-400">All</span>
         </div>
         {selectedApplicants.length > 0 ? (
             <div className="flex gap-4">
-              <span className="text-green-500 cursor-pointer">
+              <span className="text-green-500 cursor-pointer"
+              >
                 Accept({selectedApplicants.length})
               </span>
               <span className="text-red-500 cursor-pointer">
@@ -82,32 +151,47 @@ export const AllApplicants = () => {
   [&::-webkit-scrollbar]:hidden">
          {view === 'applications' ? (
             // Regular Applications View
-            applicants.map((applicant) => (
-              <div key={applicant.id} className="flex items-center justify-between p-3">
+            applicants?.map((applicant:Applicant) => (
+              <div key={applicant._id} className="flex items-center justify-between p-3">
                 <div className="flex items-center gap-3">
                   <input 
                     type="checkbox"
                     className="w-4 h-4 bg-transparent border border-gray-600 rounded"
-                    checked={selectedApplicants.includes(applicant.id)}
-                    onChange={() => toggleApplicant(applicant.id)}
+                    checked={selectedApplicants.includes(applicant._id)}
+                    onChange={() => toggleApplicant(applicant._id)}
                   />
                   <div className="w-12 h-12 rounded-full overflow-hidden">
-                    <img src={applicant.avatarSrc} alt={applicant.name} className="w-full h-full object-cover" />
+                    <img src={applicant.user.photo} alt={applicant.user.name} className="w-full h-full object-cover" />
                   </div>
                   <div>
-                    <p className="font-medium">{applicant.name}</p>
-                    <p className="text-sm text-gray-400">{applicant.message}</p>
+                    <p className="font-medium">{applicant.user.name}</p>
+                    <p className="text-sm text-gray-400">{applicant.description[0].text}</p>
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <button className="bg-blue-500 text-white px-4 py-1 rounded-md text-sm">
+                  <button className="bg-blue-500 text-white px-4 py-1 rounded-md text-sm"
+                   onClick={async () => {
+                    try {
+                      await updateApplicantStatus(applicant._id, "approved");
+                      console.log(`Applicant ${applicant._id} approved`);
+                      // Optional: update UI or show toast
+                    } catch (error) {
+                      console.error(`Error approving ${applicant._id}`, error);
+                    }
+                  }}
+                >
                     Accept
                   </button>
                   <button 
                     className="bg-transparent border border-gray-600 text-white px-4 py-1 rounded-md text-sm"
-                    onClick={() => {
-                      // In a real app, you'd implement actual removal functionality
-                      console.log(`Remove applicant ${applicant.id}`);
+                    onClick={async () => {
+                      try {
+                        await updateApplicantStatus(applicant._id, "rejected");
+                        console.log(`Applicant ${applicant._id} rejected`);
+                        // Optional: update UI or show toast
+                      } catch (error) {
+                        console.error(`Error rejecting ${applicant._id}`, error);
+                      }
                     }}
                   >
                     Remove

@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { AllQuestCard } from "../_components/questCard/AllQuestCard";
-import {FilterModal} from "../_components/filter&sort/FilterModal";
-import { SortModal } from "../_components/filter&sort/SortModal";
+// import { FilterModal } from "../_components/filter&sort/FilterModal";
+// import { SortModal } from "../_components/filter&sort/SortModal";
 import { Quest } from "../../../types/quest";
 import { constant } from "../../../constants/constant";
 import useFetchWithToken from "../../../hooks/useQuest";
+import { useForm } from "react-hook-form";
 
 export type QuestsApiResponse = {
   data: {
@@ -12,21 +13,73 @@ export type QuestsApiResponse = {
   };
 };
 
-export const QuestList = ({ onCreateQuest }: { onCreateQuest: () => void }) => {
+type FilterData = {
+  minNumber?: number;
+  maxNumber?: number;
+  location?: string;
+  type?: string;
+};
 
+type SortData = {
+  date?: string;
+  amount?: string;
+  location?: string;
+};
+
+export const QuestList = ({ onCreateQuest }: { onCreateQuest: () => void }) => {
+  const [queryParams, setQueryParams] = useState<URLSearchParams | null>(null);
   const [openFilter, setOpenFilter] = useState(false);
   const [openSort, setOpenSort] = useState(false);
 
-  const { data: quests = [], isError, isLoading } = useFetchWithToken<Quest[]>(
-    `${constant.BASE_URL}/v1/quest`,
-    {
-      selector: (res) => (res as QuestsApiResponse).data.quests,
-    }
-  );
-  
-  if (isError) return <p>Failed to load quests</p>;
+  const {
+    register: registerFilters,
+    handleSubmit: handleFiltersSubmit,
+    getValues: getFilterValues,
+  } = useForm<FilterData>();
 
-  if (isLoading) return <LoadingSkeleton />;
+  const {
+    register: registerSort,
+    handleSubmit: handleSortSubmit,
+    getValues: getSortValues,
+  } = useForm<SortData>();
+
+  const onSubmit = () => {
+    const filterData = getFilterValues();
+    const sortData = getSortValues();
+    const combinedData = { ...filterData, ...sortData };
+
+    const params = new URLSearchParams();
+
+    if (combinedData.type) params.append("mode", combinedData.type);
+    if (combinedData.minNumber) params.append("low", String(combinedData.minNumber));
+    if (combinedData.maxNumber) params.append("high", String(combinedData.maxNumber));
+    if (combinedData.location) params.append("country", combinedData.location);
+    if (combinedData.date) params.append("sort", combinedData.date);
+    if (combinedData.amount) params.append("sort", combinedData.amount);
+
+    console.log("params", params.toString());
+
+    setQueryParams(params.toString() ? params : null);
+  };
+
+  const url = useMemo(() => {
+    return queryParams
+      ? `${constant.BASE_URL}/v1/quest?${queryParams.toString()}`
+      : `${constant.BASE_URL}/v1/quest`;
+  }, [queryParams]);
+
+  const {
+    data: quests = [],
+    isError,
+    isLoading,
+  } = useFetchWithToken<Quest[]>(url, {
+    enabled: !!url,
+    selector: (res) => (res as QuestsApiResponse).data.quests,
+  });
+  console.log("quests", quests);
+
+  if (isError) return <p>Failed to load quests</p>;
+  if (isLoading) return <LoadingSkeleton />
 
   return (
     <div className="w-full">
@@ -57,10 +110,122 @@ export const QuestList = ({ onCreateQuest }: { onCreateQuest: () => void }) => {
           </button>
           {openFilter && 
           <div className="absolute top-35 p-3 bg-[#323234] rounded-lg z-10">
-              <FilterModal 
-                onSuccess={() => setOpenFilter(false)} 
-                onCancel={() => setOpenFilter(false)} 
-              />
+                  <form className="flex fontClass flex-col items-start gap-5 w-full text-white"
+                    onSubmit={handleFiltersSubmit(onSubmit)}>
+      {/* Amount */}
+      <div className="flex flex-col gap-2 items-start">
+        <h2 className="text-md font-medium">Amount</h2>
+        <div className="flex gap-3">
+          <div className="flex px-1.5 py-1 justify-between w-full border border-[#A8A8AC] rounded-lg">
+            <input
+              type="number"
+              placeholder="Min"
+              className="w-24 h-7 my-auto outline-none px-2 placeholder:font-medium placeholder:text-[#BBBBBE] appearance-none"
+              {...registerFilters("minNumber")}/>
+            <div className="flex flex-col gap-2">
+               
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_2655_13445)">
+                    <path d="M7.0026 12.834C10.2226 12.834 12.8359 10.2207 12.8359 7.00065C12.8359 3.78065 10.2226 1.16732 7.0026 1.16732C3.7826 1.16732 1.16927 3.78065 1.16927 7.00065C1.16927 10.2207 3.7826 12.834 7.0026 12.834ZM7.0026 5.83398L9.33594 8.16732H4.66927L7.0026 5.83398Z" fill="#BBBBBE"/>
+                    </g>
+                    <defs>
+                    <clipPath id="clip0_2655_13445">
+                    <rect width="14" height="14" fill="white" transform="matrix(-1 0 0 -1 14 14)"/>
+                    </clipPath>
+                    </defs>
+                    </svg>
+                
+                
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_2655_13448)">
+                    <path d="M6.9974 1.16602C3.7774 1.16602 1.16406 3.77935 1.16406 6.99935C1.16406 10.2193 3.7774 12.8327 6.9974 12.8327C10.2174 12.8327 12.8307 10.2193 12.8307 6.99935C12.8307 3.77935 10.2174 1.16602 6.9974 1.16602ZM6.9974 8.16602L4.66406 5.83268H9.33073L6.9974 8.16602Z" fill="#BBBBBE"/>
+                    </g>
+                    <defs>
+                    <clipPath id="clip0_2655_13448">
+                    <rect width="14" height="14" fill="white"/>
+                    </clipPath>
+                    </defs>
+                    </svg>
+
+                
+            </div>
+          </div>
+          <div className="flex px-1.5 py-1 justify-between w-full border border-[#A8A8AC] rounded-lg">
+            <input
+              type="number"
+              placeholder="Max"
+              className="w-24 h-7 my-auto outline-none px-2 placeholder:font-medium placeholder:text-[#BBBBBE]"
+              {...registerFilters("maxNumber")}/>
+            <div className="flex flex-col gap-2">
+               
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_2655_13445)">
+                    <path d="M7.0026 12.834C10.2226 12.834 12.8359 10.2207 12.8359 7.00065C12.8359 3.78065 10.2226 1.16732 7.0026 1.16732C3.7826 1.16732 1.16927 3.78065 1.16927 7.00065C1.16927 10.2207 3.7826 12.834 7.0026 12.834ZM7.0026 5.83398L9.33594 8.16732H4.66927L7.0026 5.83398Z" fill="#BBBBBE"/>
+                    </g>
+                    <defs>
+                    <clipPath id="clip0_2655_13445">
+                    <rect width="14" height="14" fill="white" transform="matrix(-1 0 0 -1 14 14)"/>
+                    </clipPath>
+                    </defs>
+                    </svg>
+                
+                
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_2655_13448)">
+                    <path d="M6.9974 1.16602C3.7774 1.16602 1.16406 3.77935 1.16406 6.99935C1.16406 10.2193 3.7774 12.8327 6.9974 12.8327C10.2174 12.8327 12.8307 10.2193 12.8307 6.99935C12.8307 3.77935 10.2174 1.16602 6.9974 1.16602ZM6.9974 8.16602L4.66406 5.83268H9.33073L6.9974 8.16602Z" fill="#BBBBBE"/>
+                    </g>
+                    <defs>
+                    <clipPath id="clip0_2655_13448">
+                    <rect width="14" height="14" fill="white"/>
+                    </clipPath>
+                    </defs>
+                    </svg>
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Location */}
+      <div className="flex flex-col items-start w-full ]">
+        <h2 className="text-md font-medium">Location</h2>
+        <input
+          type="text"
+          placeholder="Search Location"
+          className="w-full px-3 py-2 rounded-lg outline-none placeholder:font-medium placeholder:text-[#BBBBBE] border border-[#A8A8AC]"
+            {...registerFilters("location")}/>
+      </div>
+
+      {/* Type */}
+      <div className="flex flex-col items-start w-full">
+        <h2 className="text-md font-medium">Type</h2>
+        <div className="space-y-2 text-sm font-medium text-[#BBBBBE]">
+          <label className="flex items-center gap-2">
+            <input className="w-4 h-4" type="radio" defaultChecked {...registerFilters("type")}/>
+            All
+          </label>
+          <label className="flex items-center gap-2">
+            <input className="w-4 h-4" type="radio"  value="go" {...registerFilters("type")}/>
+            GoFlick
+          </label>
+          <label className="flex items-center gap-2">
+            <input className="w-4 h-4" type="radio"  value="on" {...registerFilters("type")}/>
+            OnFlick
+          </label>
+        </div>
+      </div>
+
+      {/* Buttons */}
+      <div className="flex justify-between pt-4 w-full font-medium">
+        <button className="px-10 py-2 bg-[#68686B] text-[#EFEFF0] rounded-md hover:bg-gray-500">
+          Cancel
+        </button>
+        <button className="px-10 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500">
+          Apply
+        </button>
+      </div>
+    </form>
           </div>
           }
 
@@ -75,10 +240,38 @@ export const QuestList = ({ onCreateQuest }: { onCreateQuest: () => void }) => {
           </button>
           {openSort && 
           <div className="absolute top-35 p-3 bg-[#323234] rounded-lg z-10">
-              <SortModal
-                onSuccess={() => setOpenSort(false)} 
-                onCancel={() => setOpenSort(false)} 
-              />
+              <form className="flex p-3 fontClass flex-col items-start gap-5 w-full text-white"
+      
+    >   
+    {/* Date */}
+    <div className="flex flex-col gap-2 items-start w-full ]">
+        <h2 className="text-md font-medium">Date</h2>
+        <select className="w-52 h-9 px-3 py-2 rounded-lg outline-none placeholder:font-medium placeholder:text-[#BBBBBE] border border-[#A8A8AC]" {...registerSort("date")} onChange={() => handleSortSubmit(onSubmit)()}>
+            <option className="text-black hover:text-white" >None</option>
+            <option className="text-black hover:text-white" value="date-desc">Highest to Lowest</option>
+            <option className="text-black hover:text-white" value="date-asc">Lowest to Highest</option>
+        </select>
+      </div>
+
+        {/* Amount */}
+        <div className="flex flex-col gap-2 items-start w-full ]">
+        <h2 className="text-md font-medium">Amount</h2>
+        <select className="w-52 h-9 px-3 py-2 rounded-lg outline-none placeholder:font-medium placeholder:text-[#BBBBBE] border border-[#A8A8AC]" {...registerSort("amount")} onChange={() => handleSortSubmit(onSubmit)()}>
+            <option  className="text-black hover:text-white">None</option>
+            <option className="text-black hover:text-white" value="amount-desc">Highest to Lowest</option>
+            <option className="text-black hover:text-white" value="amount-asc">Lowest to Highest</option>
+        </select>
+      </div>
+
+
+      {/* Location */}
+      <div className="flex flex-col gap-2 items-start w-full ]">
+        <h2 className="text-md font-medium">Location</h2>
+        <select className="w-52 h-9 px-3 py-2 rounded-lg outline-none placeholder:font-medium placeholder:text-[#BBBBBE] border border-[#A8A8AC]">
+            <option value="location1">None</option>
+        </select>
+      </div>
+    </form>
           </div>
           }
 

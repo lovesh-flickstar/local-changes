@@ -17,6 +17,7 @@ import { QuestPage } from "./pages/quest/QuestPage";
 import QuestDetail from "./pages/quest/_components/questCard/QuestDetail";
 import { CreateStory } from "./pages/Create/CreateStory";
 import { AllApplicants } from "./pages/quest/_components/Applicants/AllApplicants";
+import { MyQuestDetail } from "./pages/quest/_components/questCard/MyAllQuestDetail";
 // import { Setting } from "./pages/settings/Settings";
 const Test = lazy(() => import("./pages/test/Test"));
 
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "/quests/:id",
         element: <QuestDetail/>
+      },
+      {
+        path: "/myquests/:id",
+        element: <MyQuestDetail/>
       },
       {
         path: "/profile",
@@ -66,7 +71,7 @@ const router = createBrowserRouter([
         element: <CreateStory/>,
       },
       {
-        path: "/applicants",
+        path: "/quests/:id/applicants",
         element: <AllApplicants/>
       }
     ],

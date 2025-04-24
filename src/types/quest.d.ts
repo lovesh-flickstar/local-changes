@@ -18,6 +18,8 @@ export interface Quest {
   authorAvatar: string;
   liked: boolean;
   totalAmount?: number;
+  avgAmountPerPerson?: number;
+  maxApplicants?: number;
   location: string;
   gps?: {
     coordinates: number[];

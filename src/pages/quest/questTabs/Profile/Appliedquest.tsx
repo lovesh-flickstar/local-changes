@@ -33,7 +33,8 @@ export const AppliedQuest = () => {
   if (loading) return <p>Loading quests...</p>;
 
     return (
-        <div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4 overflow-y-auto max-h-[calc(100vh-200px)]  [-ms-overflow-style:none] [scrollbar-width:none]
+        [&::-webkit-scrollbar]:hidden">
         {quests.map((quest) => (
                   <AllQuestCard quest={quest} key="applied"/>
                 ))}

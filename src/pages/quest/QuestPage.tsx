@@ -53,7 +53,6 @@ export const QuestPage = () => {
         {showCreateForm ? (
           <CreateQuestForm 
             onSuccess={() => setShowCreateForm(false)}
-            onCancel={() => setShowCreateForm(false)}
           />
         ) : (
           <>

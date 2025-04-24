@@ -10,7 +10,7 @@ interface Props {
 }
 
 
-export const AllQuestCard: React.FC<Props> = ({ quest }) => {
+export const MyAllQuestCard: React.FC<Props> = ({ quest }) => {
   const navigate = useNavigate();
   const date = new Date(quest.createdAt);
   console.log(quest);
@@ -22,7 +22,7 @@ const formattedDate = date.toLocaleDateString("en-GB", {
 });
 
   const handleClick = () => {
-    navigate(`/quests/${quest._id}`);
+    navigate(`/myquests/${quest._id}`);
   };
   return (
     <div className="relative rounded-2xl overflow-hidden shadow-lg bg-black/80 text-white w-full"

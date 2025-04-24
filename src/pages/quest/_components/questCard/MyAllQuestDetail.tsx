@@ -7,6 +7,8 @@ import quest1 from '../../../../assets/compressed/quest1.webp'
 import { LoadingSkeleton } from "../../questTabs/AllQuests";
 import useFetchWithToken from "../../../../hooks/useQuest";
 import { Quest } from "../../../../types/quest";
+import { EditQuestForm } from "../create/EditQuest";
+// import { EditQuestForm } from "../create/EditQuest";
 
 
 type QuestDetailsApiResponse = {
@@ -15,7 +17,7 @@ type QuestDetailsApiResponse = {
   };
 };
 
-const QuestDetail = () => {
+export const MyQuestDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [startQuest, setStartQuest] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -43,6 +45,7 @@ const QuestDetail = () => {
   return (
     <div className="p-6 fontClass flex flex-col gap-4 w-full h-full overflow-y-auto  [-ms-overflow-style:none] [scrollbar-width:none]
   [&::-webkit-scrollbar]:hidden py-10 md:py-0">
+    {!startQuest ? ( <>
       <div className="flex justify-between w-full px-6 py-4">
         <div className="flex flex-col gap-1">
           <p className="text-2xl font-semibold text-white flex gap-8 items-center">
@@ -111,15 +114,17 @@ const QuestDetail = () => {
           {!startQuest && (
             <button
             className="text-white bg-blue-600 rounded-lg px-10 py-1 cursor-pointer hover:bg-blue-700 transition-colors"
-            onClick={() => setStartQuest(!startQuest)}
+            onClick={() => {setStartQuest(!startQuest)
+            }}
+            
           >
-            Start
+            Edit
           </button>
           )}
         </div>
       </div>
 
-      {!startQuest ? (
+      
         <div className="lg:pr-6 lg:pl-14 px-6 flex flex-col gap-4">
           {/* Image Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
@@ -213,42 +218,20 @@ const QuestDetail = () => {
               </p>
             </div>
         </div>
-        
+        </>
       ):(
-        <div className=" w-3xl mx-auto flex flex-col  gap-2.5 text-white py-2">
-          <div className='flex flex-col gap-3 w-full'>
-              <label className='font-semibold text-lg'>Description</label>
-              <textarea
-                className='p-3 h-44 outline-none w-full border placeholder:text-[#E2E2E3] border-[#A8A8AC] rounded-lg'
-                placeholder='Provide brief information about your quest.'
-              />
-            </div>
-               <div className='flex flex-col gap-3 w-full'>
-              <label className='font-semibold text-lg'>Upload Media</label>
-              <div className='relative'>
-                <input
-                type='file'
-                className='absolute inset-0 w-full h-full opacity-0 cursor-pointer'
-                />
-                <div className='p-3 h-44 outline-none w-full border-2 border-dashed placeholder:text-[#E2E2E3] border-[#A8A8AC] rounded-lg flex items-center flex-col justify-center'>
-                <svg width="73" height="59" viewBox="0 0 73 59" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0.5 33.0544C0.5 39.9242 6.00374 45.4725 15.2613 45.4725H57.5977C66.2625 45.4725 71.4558 40.5846 71.4558 34.1905C71.4558 28.8534 68.0405 24.4672 62.5367 22.3799C62.5934 10.5958 53.5333 2.08789 41.9897 2.08789C34.3409 2.08789 28.8936 5.91907 25.5067 10.5429C19.0998 8.93116 10.9994 13.5814 10.8583 21.006C4.47961 21.9307 0.5 26.8188 0.5 33.0544ZM36.1189 59.0006C34.9054 59.0006 33.8611 58.0758 33.8611 56.9662V31.2313L34.0305 27.2944L32.4499 28.8534L28.0751 33.2129C27.68 33.6355 27.0872 33.8471 26.5228 33.8471C25.3373 33.8471 24.4906 33.0544 24.4906 31.9976C24.4906 31.4161 24.7446 30.9935 25.168 30.5971L34.4819 22.1949C35.0464 21.6665 35.5262 21.508 36.1189 21.508C36.6834 21.508 37.1632 21.6665 37.7279 22.1949L47.0417 30.5971C47.4651 30.9935 47.7192 31.4161 47.7192 31.9976C47.7192 33.0544 46.816 33.8471 45.6588 33.8471C45.0943 33.8471 44.5299 33.6355 44.1065 33.2129L39.76 28.8534L38.1793 27.2944L38.3487 31.2313V56.9662C38.3487 58.0758 37.3325 59.0006 36.1189 59.0006Z" fill="#007AFF"/>
-                </svg>
-                <p className='font-semibold text-lg'>Upload Files<span className='text-[#BBBBBE] text-md font-medium'>or drag and drop</span></p>
-                <p className='font-medium text-sm text-[#BBBBBE]'>PNG,JPG up to 100MB</p>
-                </div>
-              </div>
-            </div>
-            <div className='flex gap-5 items-end justify-end mt-4'>
-            <button className='px-6 cursor-pointer py-2 border border-[#A8A8AC] rounded-lg text-[#68686B] font-semibold text-md'>Cancel</button>
-            <button className='px-6 cursor-pointer py-2 bg-blue-600 rounded-lg font-semibold text-md text-white'>Start Quest</button>
-          </div>
-        </div>
+        <>
+        {quest && (
+          <EditQuestForm 
+            quest={quest}
+            onSuccess={() => setStartQuest(false)}
+          />
+          
+        )}
+        </>
       )
       }
         
     </div>
   );
 };
-
-export default QuestDetail;
